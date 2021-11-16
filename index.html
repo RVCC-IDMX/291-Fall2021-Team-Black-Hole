@@ -7,7 +7,7 @@
     <title>Black Hole Prototype</title>
 
     <script src="https://pixijs.download/release/pixi.js"></script>
-    <script src="pixi-filters/dist/pixi-filters.js"></script>
+   
 </head>
 <body>
     <script>
@@ -25,6 +25,14 @@
 
         var backgroundImage = PIXI.Sprite.from("background.jpg");
         app.stage.addChild(backgroundImage);
+
+        //Filter 
+
+        //Lensing
+        app.stage.filters = [new PIXI.filters.BulgePinchFilter()];
+        //var filter = new PIXI.filters.BulgePinchFilter();
+
+        
     </script>
     
 </body>
