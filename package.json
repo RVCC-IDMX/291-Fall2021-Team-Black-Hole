@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/RVCC-IDMX/291-Fall2021-Team-Black-Hole/issues"
   },
-  "homepage": "https://github.com/RVCC-IDMX/291-Fall2021-Team-Black-Hole#readme"
+  "homepage": "https://github.com/RVCC-IDMX/291-Fall2021-Team-Black-Hole#readme",
+  "dependencies": {
+    "pixi-filters": "^4.1.5"
+  }
 }
