@@ -22,7 +22,8 @@
         //Add view to the document
         document.body.appendChild(app.view);
 
-        var backgroundImage;
+        var backgroundImage = PIXI.Sprite.from("background.jpg");
+        app.stage.addChild(backgroundImage);
     </script>
     
 </body>
