@@ -9,6 +9,19 @@
     <script src="https://pixijs.download/release/pixi.js"></script>
 </head>
 <body>
+    <script>
+        //The App
+        var app = new PIXI.Application({
+            width: 640,
+            height: 480,
+            backgroundColor: 0x000000
+        });
+        var stage = app.stage;
+        var view = app.view;
+
+        //Add view to the document
+        document.body.appendChild(app.view);
+    </script>
     
 </body>
 </html>
