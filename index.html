@@ -10,7 +10,8 @@
    
 </head>
 <body>
-    <script>
+    <script type='module'>
+
         //The App
         var app = new PIXI.Application({
             width: 640,
@@ -29,8 +30,13 @@
         //Filter 
 
         //Lensing
-        app.stage.filters = [new PIXI.filters.BulgePinchFilter()];
+        //app.stage.filters = [new PIXI.filters.BulgePinchFilter()];
         //var filter = new PIXI.filters.BulgePinchFilter();
+        import {BulgePinchFilter} from './node_modules/@pixi/filter-bulge-pinch';
+        //import {Container} from 'pixi.js';
+
+        const container = new Container();
+        container.filters = [new BulgePinchFilter()];
 
         
     </script>
