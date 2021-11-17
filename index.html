@@ -49,6 +49,19 @@
         let astronaut = PIXI.Sprite.from('astronaut.png');
         app.stage.addChild(astronaut);
 
+        //Animation logic
+        // Pause animation function
+        function pause(ms) {
+            return new Promise((resolve, reject) => {
+                setTimeout(resolve, ms);
+            });
+        }
+
+        // Stop animation function
+        Animate.stop = function (obj) {
+            cancelAnimationFrame(obj).animationID;
+        }
+
         
     </script>
     
