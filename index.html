@@ -11,6 +11,10 @@
 
     <!-- Load our filter -->
     <script src="bulge-pinch-filter.js"></script>
+
+    <script src="js/bezier.js"></script>
+    <script src="js/animate.js"></script>
+    <script src="js/ui_elements.js"></script>
    
 </head>
 <body>
@@ -61,6 +65,22 @@
         Animate.stop = function (obj) {
             cancelAnimationFrame(obj).animationID;
         }
+
+        //Spaghettification Animation
+        async function float() {
+            await Animate.to(astronaut, {
+                x: 350, y: 0,
+                duration: 3000,
+                easing: Animate.easeInOut
+            });
+            await Animate.to(astronaut, {
+                x: 350, y: 20,
+                duration: 3000,
+                easing: Animate.easeInOut
+            });
+            float();
+        }
+        float();
 
         
     </script>
