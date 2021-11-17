@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/RVCC-IDMX/291-Fall2021-Team-Black-Hole#readme",
   "dependencies": {
+    "@pixi/filter-bulge-pinch": "^4.1.5",
     "pixi-filters": "^4.1.5"
   }
 }

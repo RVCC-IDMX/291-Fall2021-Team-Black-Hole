@@ -14,7 +14,7 @@
    
 </head>
 <body>
-    <script type='module'>
+    <script>
 
         //The App
         var app = new PIXI.Application({
@@ -37,7 +37,11 @@
         app.stage.addChild(container);
 
         //Step 2: Load filter
-        let bulge = new BulgePinchFilter();
+        let bulge = new BulgePinchFilter({
+            center: [0.5, 0.5],
+            radius: 100,
+            strength: 1,
+        });
 
         //Step 3: Add filter to container
         container.filters = [bulge];
