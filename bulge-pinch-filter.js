@@ -124,6 +124,3 @@ var BulgePinchFilter = /** @class */ (function (_super) {
     };
     return BulgePinchFilter;
 }(Filter));
-
-export { BulgePinchFilter };
-//# sourceMappingURL=filter-bulge-pinch.esm.js.map

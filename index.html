@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Black Hole Prototype</title>
 
+    <!-- Load PIXI -->
     <script src="https://pixijs.download/release/pixi.js"></script>
+
+    <!-- Load our filter -->
+    <script src="bulge-pinch-filter.js"></script>
    
 </head>
 <body>
@@ -24,19 +28,19 @@
         //Add view to the document
         document.body.appendChild(app.view);
 
-        var backgroundImage = PIXI.Sprite.from("background.jpg");
-        app.stage.addChild(backgroundImage);
-
-        //Filter 
-
         //Lensing
-        //app.stage.filters = [new PIXI.filters.BulgePinchFilter()];
-        //var filter = new PIXI.filters.BulgePinchFilter();
-        import {BulgePinchFilter} from './node_modules/@pixi/filter-bulge-pinch';
-        //import {Container} from 'pixi.js';
 
-        const container = new Container();
-        container.filters = [new BulgePinchFilter()];
+        //Step 1: Create container w/bg
+        const backgroundImage = PIXI.Sprite.from("background.jpg");
+        const container = new PIXI.Container();
+              container.addChild(backgroundImage);
+        app.stage.addChild(container);
+
+        //Step 2: Load filter
+        let bulge = new BulgePinchFilter();
+
+        //Step 3: Add filter to container
+        container.filters = [bulge];
 
         
     </script>
