@@ -290,6 +290,17 @@
         }
         float();
 
+        async function jitter() {
+            await Animate.to(cluster, {
+                x: 203, y: 2, duration: 3000, easing: Animate.easeInOut
+            });
+            await Animate.to(cluster, {
+                x: 198,y: -1, duration: 3000, easing: Animate.easeInOut
+            });
+            jitter();
+        }
+        jitter();
+
     </script>
 
 </body>
