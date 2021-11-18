@@ -54,6 +54,58 @@
         //Step 3: Add filter to container
         container.filters = [bulge];
 
+        //Slider Logic
+        function makeSlider() {
+            let slideContain = new PIXI.Container();
+            slideContain.interactive = true;
+            slideContain.value = 0;
+
+            let track = new PIXI.Graphics();
+            track.beginFill(0xCCCCCC);
+            track.drawRoundedRect(200, -10, 300, 20);
+            track.alpha = .7;
+
+            slideContain.addChild(track);
+
+            let slide = new PIXI.Graphics();
+            slide.interactive = true;
+            slide.beginFill(0xEEEEEE);
+            slide.drawRoundedRect(175, -25, 50, 50);
+            slide.alpha - .95;
+
+            slideContain.addChild(slide);
+
+            slide.dragging = false;
+            slide.on("pointerdown", e => {
+                slide.dragging = true;
+            });
+
+            slide.on("pointermove", e => {
+                if (slide.dragging) {
+                    let newX = e.data.global.x - slideContain.getGlobalPosition().x - 200;
+                    let newY = e.data.global.y - slideContain.getGlobalPosition().y;
+
+                    if (newX > track.width) newX = track.width;
+                    if (newX < 0) newX = 0;
+
+                    slideContain.value = newX / track.width;
+                    slide.x = newX;
+                    //change filter 
+                }
+            });
+            slide.on("pointerup", e => {
+                slide.dragging = false;
+            });
+            slide.on("pointerupoutside", e => {
+                slide.dragging = false;
+            });
+            return slideContain;
+        };
+
+        let slideContain = makeSlider();
+        app.stage.addChild(slideContain);
+
+
         //Scene 1
         let scene1 = new PIXI.Container();
 
