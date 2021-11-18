@@ -67,15 +67,19 @@
         //let nextButtonText = new PIXI.Text("Next >");
         nextButton.x = app.view.width - nextButton.width;
         nextButton.y = app.view.height - nextButton.height;
-        scene1.addChild(nextButton);
+        //scene1.addChild(nextButton);
         app.stage.addChild(scene1);
+
+        app.stage.addChild(nextButton);
 
         //SCene 2
         let scene2 = new PIXI.Container();
         let backButton = UI.Button(0,0, "Out");
         backButton.x = 440;
-        scene2.addChild(backButton);
+        //scene2.addChild(backButton);
         app.stage.addChild(scene2);
+
+        app.stage.addChild(backButton);
 
         //astronaut.interactive = true;
 
@@ -172,6 +176,7 @@
                 currentScene.alpha = 1;
                 //Reset astronaut to original position
                 Animate.to(astronaut, { x: 0, y: 100, duration: 10 });
+                float();
             },
 
             //Fade between
