@@ -90,7 +90,7 @@
 
                     slideContain.value = newX / track.width;
                     slide.x = newX;
-                    //change filter 
+                    bulge.uniforms.strength = (newX);
                 }
             });
             slide.on("pointerup", e => {
