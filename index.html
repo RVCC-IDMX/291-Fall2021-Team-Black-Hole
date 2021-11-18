@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,8 +16,9 @@
     <script src="js/bezier.js"></script>
     <script src="js/animate.js"></script>
     <script src="js/ui_elements.js"></script>
-   
+
 </head>
+
 <body>
     <script>
 
@@ -33,11 +35,13 @@
         document.body.appendChild(app.view);
 
         //Lensing
+        //Hoisted Conditions
+
 
         //Step 1: Create container w/bg
         const backgroundImage = PIXI.Sprite.from("background.jpg");
         const container = new PIXI.Container();
-              container.addChild(backgroundImage);
+        container.addChild(backgroundImage);
         app.stage.addChild(container);
 
         //Step 2: Load filter
@@ -50,8 +54,30 @@
         //Step 3: Add filter to container
         container.filters = [bulge];
 
+        //Scene 1
+        let scene1 = new PIXI.Container();
+
         let astronaut = PIXI.Sprite.from('astronaut.png');
-        app.stage.addChild(astronaut);
+        astronaut.scale.set(.45);
+        astronaut.y = 100;
+        scene1.addChild(astronaut);
+        //app.stage.addChild(astronaut);
+
+        let nextButton = UI.Button(0, 0, "In");
+        //let nextButtonText = new PIXI.Text("Next >");
+        nextButton.x = app.view.width - nextButton.width;
+        nextButton.y = app.view.height - nextButton.height;
+        scene1.addChild(nextButton);
+        app.stage.addChild(scene1);
+
+        //SCene 2
+        let scene2 = new PIXI.Container();
+        let backButton = UI.Button(0,0, "Out");
+        backButton.x = 440;
+        scene2.addChild(backButton);
+        app.stage.addChild(scene2);
+
+        //astronaut.interactive = true;
 
         //Animation logic
         // Pause animation function
@@ -66,37 +92,143 @@
             cancelAnimationFrame(obj).animationID;
         }
 
-        //Spaghettification Animation
+        //Director object to manage scenes
+        var Director = {
+
+            //Object to hold list of scenes
+            scene: {},
+
+            //Add a scene to the list
+            addScene: (name, scene) => {
+
+                //If it exists throw an error
+                if (Director.scene[name])
+                    throw "That scene already exists!"
+
+                //Otherwise add it
+                Director.scene[name] = scene;
+
+                //If it's the first scene, make it the active one
+                if (Director.currentScene == null)
+                    Director.currentScene = name;
+
+            },
+
+            //Keep track of the current scene
+            currentScene: null,
+
+            //Change scene function
+            showScene: async (nextSceneName, params) => {
+
+                if (params == undefined) params = {};
+
+                let currentScene = Director.scene[Director.currentScene];
+                let nextScene = Director.scene[nextSceneName];
+
+                if (params.transition == undefined)
+                    params.transition = Director.cut;
+
+                await params.transition(currentScene, nextScene, params);
+
+                Director.currentScene = nextSceneName;
+
+            },
+
+            //
+            //Transitions for changing scenes
+            //
+
+            //Cut (no transition)
+            cut: async (currentScene, nextScene, params) => {
+                app.stage.removeChild(currentScene);
+                app.stage.addChild(nextScene);
+            },
+
+            //Fade between spaghetti
+            spaghetti: async (currentScene, nextScene, params) => {
+                //Check duration
+                if (params == undefined) params = {};
+                if (params.duration == undefined) params.duration = 500;
+
+                //Fade out current scene
+                //Translate astronaut
+                await Animate.to(astronaut, { x: 250, y: 100, duration: 7000, easing: Animate.easeInOut });
+                //Pause
+                await pause(1000);
+                //Fade out
+                await Animate.to(currentScene, {
+                    alpha: 0,
+                    duration: 3000,
+                });
+                //Remove it from stage
+                app.stage.removeChild(currentScene);
+                //Set next scene to zero alpha
+                nextScene.alpha = 0;
+                //Add it to the stage
+                app.stage.addChild(nextScene);
+                //Fade it in
+                await Animate.to(nextScene, { alpha: 1, duration: params.duration / 2 });
+                //Reset the off-stage scene's alpha back
+                currentScene.alpha = 1;
+                //Reset astronaut to original position
+                Animate.to(astronaut, { x: 0, y: 100, duration: 10 });
+            },
+
+            //Fade between
+            fade: async (currentScene, nextScene, params) => {
+
+                //Check duration
+                if (params == undefined) params = {};
+                if (params.duration == undefined) params.duration = 500;
+
+                //Fade out current scene
+                await Animate.to(currentScene, { alpha: 0, duration: params.duration / 2 });
+                //Remove it from stage
+                app.stage.removeChild(currentScene);
+                //Set next scene to zero alpha
+                nextScene.alpha = 0;
+                //Add it to the stage
+                app.stage.addChild(nextScene);
+                //Fade it in
+                await Animate.to(nextScene, { alpha: 1, duration: params.duration / 2 });
+                //Reset the off-stage scene's alpha back
+                currentScene.alpha = 1;
+            },
+        };
+
+        //Use Director setup to manage scenes alongside button clicks
+        Director.addScene("first", scene1);
+        Director.addScene("second", scene2);
+
+        //First next button, goes to second scene
+        nextButton.onclick = () => {
+            Director.showScene("second", { transition: Director.spaghetti });
+        }
+
+        //Buttons for second slide, goes to first scene
+        backButton.onclick = () => {
+            Director.showScene("first", { transition: Director.fade });
+        }
+
+        
+        //Animations
         async function float() {
             await Animate.to(astronaut, {
-                x: 0, y: 0,
-                duration: 3000,
+                x: 0, y: 50,
+                duration: 2000,
                 easing: Animate.easeInOut
             });
             await Animate.to(astronaut, {
-                x: 0, y: 20,
-                duration: 3000,
+                x: 0, y: 120,
+                duration: 2000,
                 easing: Animate.easeInOut
             });
             float();
         }
         float();
 
-        astronaut.interactive = true;
-
-        astronaut.on('pointerdown', spaghetti);
-
-        async function spaghetti() {
-            await Animate.to(astronaut, {
-                x:250, y: 0,
-                duration: 3000,
-                easing: Animate.easeInOut
-            });
-            astronaut.alpha = .7;
-        }
-
-        
     </script>
-    
+
 </body>
+
 </html>
