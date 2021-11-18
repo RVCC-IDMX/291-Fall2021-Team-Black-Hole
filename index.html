@@ -40,8 +40,12 @@
 
         //Step 1: Create container w/bg
         const backgroundImage = PIXI.Sprite.from("background.jpg");
+        const cluster = PIXI.Sprite.from("cluster.gif");
+        cluster.scale.set(2);
+        cluster.x = 200;
         const container = new PIXI.Container();
         container.addChild(backgroundImage);
+        container.addChild(cluster);
         app.stage.addChild(container);
 
         //Step 2: Load filter
