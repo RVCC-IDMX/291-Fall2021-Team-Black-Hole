@@ -12,7 +12,7 @@
 
     <!-- Load our filter -->
     <script src="bulge-pinch-filter.js"></script>
-    
+
     <!-- Load JS Folder Files for Animation and UI Elements -->
     <script src="js/bezier.js"></script>
     <script src="js/animate.js"></script>
@@ -126,7 +126,7 @@
 
         //SCene 2
         let scene2 = new PIXI.Container();
-        let backButton = UI.Button(0,0, "Out");
+        let backButton = UI.Button(0, 0, "Out");
         backButton.x = 0;
         backButton.y = 380;
         app.stage.addChild(scene2);
@@ -289,7 +289,7 @@
                 x: 203, y: 2, duration: 7000, easing: Animate.easeInOut
             });
             await Animate.to(cluster, {
-                x: 198,y: -1, duration: 7000, easing: Animate.easeInOut
+                x: 198, y: -1, duration: 7000, easing: Animate.easeInOut
             });
             jitter();
         }
