@@ -269,7 +269,7 @@
         }
 
         //Buttons for second slide, goes to first scene
-        backButton.onclick = () => {
+        backButton.pointerdown = () => {
             Director.showScene("first", { transition: Director.fade });
         }
 
