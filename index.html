@@ -35,9 +35,7 @@
         //Add view to the document
         document.body.appendChild(app.view);
 
-        //Lensing
-        //Hoisted Conditions
-
+        //Filter Logic
 
         //Step 1: Create container w/bg
         const backgroundImage = PIXI.Sprite.from("background.jpg");
@@ -110,6 +108,7 @@
         let slideContain = makeSlider();
         app.stage.addChild(slideContain);
 
+        //Scene Logic
 
         //Scene 1
         let scene1 = new PIXI.Container();
@@ -118,15 +117,11 @@
         astronaut.scale.set(.45);
         astronaut.y = 100;
         scene1.addChild(astronaut);
-        //app.stage.addChild(astronaut);
 
         let nextButton = UI.Button(0, 0, "In");
-        //let nextButtonText = new PIXI.Text("Next >");
         nextButton.x = app.view.width - nextButton.width;
         nextButton.y = app.view.height - nextButton.height;
-        //scene1.addChild(nextButton);
         app.stage.addChild(scene1);
-
         app.stage.addChild(nextButton);
 
         //SCene 2
@@ -134,22 +129,19 @@
         let backButton = UI.Button(0,0, "Out");
         backButton.x = 0;
         backButton.y = 380;
-        //scene2.addChild(backButton);
         app.stage.addChild(scene2);
-
         app.stage.addChild(backButton);
 
-        //astronaut.interactive = true;
-
         //Animation logic
-        // Pause animation function
+
+        //Pause animation function
         function pause(ms) {
             return new Promise((resolve, reject) => {
                 setTimeout(resolve, ms);
             });
         }
 
-        // Stop animation function
+        //Stop animation function
         Animate.stop = function (obj) {
             cancelAnimationFrame(obj).animationID;
         }
@@ -273,8 +265,9 @@
             Director.showScene("first", { transition: Director.fade });
         }
 
-        
         //Animations
+
+        //Astronaut idle floating animation
         async function float() {
             await Animate.to(astronaut, {
                 x: 0, y: 50,
@@ -290,6 +283,7 @@
         }
         float();
 
+        //Cluster idle animation
         async function jitter() {
             await Animate.to(cluster, {
                 x: 203, y: 2, duration: 7000, easing: Animate.easeInOut
