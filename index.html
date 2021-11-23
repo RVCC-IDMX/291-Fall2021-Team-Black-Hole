@@ -257,7 +257,7 @@
         Director.addScene("second", scene2);
 
         //First next button, goes to second scene
-        nextButton.pointerdown = () => {
+        nextButton.onclick = () => {
             Director.showScene("second", { transition: Director.spaghetti });
         }
 
