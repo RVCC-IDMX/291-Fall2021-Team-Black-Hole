@@ -14,8 +14,8 @@ The Slider will allow the user to adjust the strength of the black hole present 
 
 # Animation
 
-## Background displacement mapping 
-Give the illusion of stars flicering in the background
+## Background Stars
+The displacement map, or equal animation, will give the illusion of stars flickering in the background.
 
 ## Spaghettification
 The astronaut sprite will move toward the center of the blackhole, decelerating and then stopping before fading until transparent. This will mimic the phenomena known as spaghettification.
