@@ -14,8 +14,14 @@ Add one slider to adjust the filter strength, giving the effect different masses
 Example: bulge.uniforms.strength = [1 - 4, etc.]
 
 ## Resources
+### Images
 [Astronaut](https://pngimg.com/uploads/astronaut/astronaut_PNG66.png)
 
 [Background](https://unsplash.com/photos/uhjiu8FjnsQ)
 
 [Cluster](https://giphy.com/stickers/galaxy-space-gif-j5QUSpXVuwtr2)
+### Code
+[Filters](https://www.npmjs.com/package/pixi-filters)
+
+## Links
+[Prototype](https://trusting-knuth-aa57ff.netlify.app)
