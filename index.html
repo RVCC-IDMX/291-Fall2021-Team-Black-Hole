@@ -25,6 +25,11 @@
 <body style="background-color: darkgray;">
     <script>
 
+        //Audio Event Listener
+        let audio = document.createElement("audio");
+        audio.autoplay = true;
+        audio.src = "ambience.mp3";
+
         //The App
         var app = new PIXI.Application({
             width: 640,
