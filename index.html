@@ -30,6 +30,10 @@
         audio.autoplay = true;
         audio.src = "ambience.mp3";
 
+        document.addEventListener("mousemove", () => {
+            audio.play();
+        });
+
         //The App
         var app = new PIXI.Application({
             width: 640,
