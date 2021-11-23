@@ -38,4 +38,4 @@ Example: bulge.uniforms.strength = [1 - 4, etc.]
 [Filters](https://www.npmjs.com/package/pixi-filters)
 
 ## Links
-[Prototype](https://trusting-knuth-aa57ff.netlify.app)
+[Prototype](https://blackhole-proto.netlify.app)
