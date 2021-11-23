@@ -88,8 +88,21 @@ Animate.to = function(obj,end) {
                 obj.rotation = lerp(start.rotation,end.rotation,ease);
 
             //Lerp our tint -- we'll also need to clean this up for each channel, but later
-            if (end.tint != undefined)
-                obj.tint = lerp(start.tint,end.tint,ease);
+            if (end.tint != undefined) {
+                let red_start = (start.tint & 0xFF0000) >> 16;
+                let grn_start = (start.tint & 0x00FF00) >> 8;
+                let blu_start = (start.tint & 0x0000FF);
+
+                let red_end = (end.tint & 0xFF0000) >> 16;
+                let grn_end = (end.tint & 0x00FF00) >> 8;
+                let blu_end = (end.tint & 0x0000FF);
+
+                let red_now = Math.floor(lerp(red_start,red_end,ease));
+                let grn_now = Math.floor(lerp(grn_start,grn_end,ease));
+                let blu_now = Math.floor(lerp(blu_start,blu_end,ease));
+
+                obj.tint = (red_now<<16) + (grn_now<<8) + blu_now;
+            }
 
             //Lerp our alpha
             if (end.alpha != undefined)
