@@ -10,7 +10,7 @@ The button affordances will begin the spaghettification animation by clicking th
 
 The Slider will allow the user to adjust the strength of the black hole present on the screen. 
 
-**While this is a prototype, specific filters and assets are subject to change**
+*While this is a prototype, specific filters and assets are subject to change*
 
 # Animation
 
