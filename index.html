@@ -38,8 +38,8 @@
         //Filter Logic
 
         //Step 1: Create container w/bg
-        const backgroundImage = PIXI.Sprite.from("background.jpg");
-        const cluster = PIXI.Sprite.from("cluster.gif");
+        const backgroundImage = PIXI.Sprite.from("img/background.jpg");
+        const cluster = PIXI.Sprite.from("img/cluster.gif");
         cluster.scale.set(2);
         cluster.x = 200;
         const container = new PIXI.Container();
@@ -113,7 +113,7 @@
         //Scene 1
         let scene1 = new PIXI.Container();
 
-        let astronaut = PIXI.Sprite.from('astronaut.png');
+        let astronaut = PIXI.Sprite.from("img/astronaut.png");
         astronaut.scale.set(.45);
         astronaut.y = 100;
         scene1.addChild(astronaut);
