@@ -21,7 +21,8 @@ The displacement map, or equal animation, will give the illusion of stars flicke
 The astronaut sprite will move toward the center of the blackhole, decelerating and then stopping before fading until transparent. This will mimic the phenomena known as spaghettification.
 
 ## Scale Adjustment
-Add one slider to adjust the filter strength, giving the effect different masses have on gravity
+Add one slider to adjust the filter strength, giving the effect different masses have on gravity.
+
 Example: bulge.uniforms.strength = [1 - 4, etc.]
 
 ## Resources
