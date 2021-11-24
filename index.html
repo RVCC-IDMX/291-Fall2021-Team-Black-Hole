@@ -51,11 +51,18 @@
         //Step 1: Create container w/bg
         const backgroundImage = PIXI.Sprite.from("img/background.jpg");
         const cluster = PIXI.Sprite.from("img/cluster.gif");
+        //const nebula = PIXI.Sprite.from("img/nebula.jpg");
         cluster.scale.set(2);
         cluster.x = 200;
         const container = new PIXI.Container();
         container.addChild(backgroundImage);
+        
+        //container.addChild(nebula);
         container.addChild(cluster);
+        //nebula.x = 0;
+        //nebula.y = -10;
+        //nebula.scale.set(.75);
+        //nebula.width = 750;
         app.stage.addChild(container);
 
         //Step 2: Load filter
