@@ -300,16 +300,33 @@
         float();
 
         //Cluster idle animation
-        async function jitter() {
-            await Animate.to(cluster, {
-                x: 210, y: 2, duration: 7000, easing: Animate.easeInOut
-            });
-            await Animate.to(cluster, {
-                x: 185, y: -1, duration: 7000, easing: Animate.easeInOut
-            });
-            jitter();
-        }
-        jitter();
+        //animate();
+        //jitter();
+        // async function jitter() {
+        //     await Animate.to(cluster, {
+        //         x: 210, y: 2, duration: 7000, easing: Animate.easeInOut
+        //     });
+            
+        //     await Animate.to(cluster, {
+        //         x: 185, y: -1, duration: 7000, easing: Animate.easeInOut
+        //     });
+        //     jitter();
+        // }
+        //jitter();
+
+        //cluster.height = 750;
+        cluster.scale.set(3);
+        cluster.x = 440;
+        cluster.y = 400;
+
+        cluster.pivot.x = 100;
+        cluster.pivot.y = 140;
+        
+        app.ticker.add((delta) => {
+            cluster.rotation += .002 * delta;
+            
+        })
+        
 
     </script>
     <p style="font-family: 'Courier New', Courier, monospace;">Authors: Tim, Fender, Spencer</p>
