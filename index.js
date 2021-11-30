@@ -1,45 +1,57 @@
-//Audio Event Listener
-let audio = document.createElement("audio");
-audio.autoplay = true;
-audio.src = "ambience.ogg";
+// ENVIRONMENT SETUP ------------------------------------------------------- //
 
-document.addEventListener("mousemove", () => {
-    audio.play();
-});
+// Define screen res
+const sw = 640;
+const sh = 480;
 
-//The App
-var app = new PIXI.Application({
-    width: 640,
-    height: 480,
+// Load app
+let app = new PIXI.Application({
+    width: sw,
+    height: sh,
     backgroundColor: 0x000000
 });
-var stage = app.stage;
-var view = app.view;
+let stage = app.stage;
+let view = app.view;
 
-//Add view to the document
+// Add view to the document
 document.body.appendChild(app.view);
 
-//Filter Logic
+// Initalize containers
+let main = new PIXI.Container();
 
-//Step 1: Create container w/bg
-const backgroundImage = PIXI.Sprite.from("img/background.jpg");
-const cluster = PIXI.Sprite.from("img/cluster.gif");
-cluster.scale.set(2);
-cluster.x = 200;
-const container = new PIXI.Container();
-container.addChild(backgroundImage);
-container.addChild(cluster);
-app.stage.addChild(container);
+// FUNCTIONS --------------------------------------------------------------- //
 
-//Step 2: Load filter
+let initSprite = (file, x, y, size, container) => {
+    let sprite = PIXI.Sprite.from(`img/${file}.png`);
+    sprite.x = x;
+    sprite.y = y;
+    sprite.scale.x = size;
+    sprite.scale.y = size;
+    app.stage.addChild(sprite);
+    if (container) container.addChild(sprite);
+    return sprite;
+};
+
+// SPRITE SETUP ------------------------------------------------------------ //
+
+// Sprite pool
+let bg      = initSprite('background', 0, -sh/4, 0.34, main);
+let cluster = initSprite('cluster', sw/6, sh/4, 2, main);
+
+// "Black hole" filter
 let bulge = new BulgePinchFilter({
     center: [0.5, 0.5],
     radius: 100,
     strength: 2,
 });
+main.filters = [bulge];
 
-//Step 3: Add filter to container
-container.filters = [bulge];
+// Push containers to stage
+app.stage.addChild(main);
+
+// ANIMATION SETUP --------------------------------------------------------- //
+// ANIMATION EXECUTION ----------------------------------------------------- //
+// ?? ---------------------------------------------------------------------- //
 
 //Slider Logic
 function makeSlider() {
@@ -283,3 +295,12 @@ async function jitter() {
     jitter();
 }
 jitter();
+
+//Audio Event Listener
+let audio = document.createElement("audio");
+audio.autoplay = true;
+audio.src = "ambience.ogg";
+
+document.addEventListener("mousemove", () => {
+    audio.play();
+});
