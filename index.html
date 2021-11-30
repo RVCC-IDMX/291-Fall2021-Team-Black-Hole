@@ -19,11 +19,13 @@
     <script src="js/bezier.js"></script>
     <script src="js/animate.js"></script>
     <script src="js/ui_elements.js"></script>
-
+    
 </head>
 
 <body style="background-color: darkgray;">
+    
     <script>
+        
 
         //Audio Event Listener
         let audio = document.createElement("audio");
@@ -33,6 +35,9 @@
         document.addEventListener("mousemove", () => {
             audio.play();
         });
+
+        //The Animate Background
+        
 
         //The App
         var app = new PIXI.Application({
@@ -55,8 +60,9 @@
         cluster.scale.set(2);
         cluster.x = 200;
         const container = new PIXI.Container();
-        container.addChild(backgroundImage);
+       // container.addChild(backgroundImage);
         
+       
         //container.addChild(nebula);
         container.addChild(cluster);
         //nebula.x = 0;
