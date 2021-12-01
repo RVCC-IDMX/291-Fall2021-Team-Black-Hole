@@ -1,8 +1,9 @@
 // ENVIRONMENT SETUP ------------------------------------------------------- //
 
-// Define screen res
-const sw = 640;
-const sh = 480;
+// Define screen res, shortcuts
+const sw = 640, sh = 480;
+const scx = sw/2, scy = sh/2;
+const pi = Math.PI;
 
 // Load app
 let app = new PIXI.Application({
@@ -17,16 +18,21 @@ let view = app.view;
 document.body.appendChild(app.view);
 
 // Initalize containers
-let main = new PIXI.Container();
+let background = new PIXI.Container();
+let ui = new PIXI.Container();
 
 // FUNCTIONS --------------------------------------------------------------- //
 
-let initSprite = (file, x, y, size, container) => {
+let initSprite = (file, x, y, size, anchor, container) => {
     let sprite = PIXI.Sprite.from(`img/${file}.png`);
     sprite.x = x;
     sprite.y = y;
-    sprite.scale.x = size;
-    sprite.scale.y = size;
+    sprite.scale.set(size);
+    sprite['zoomx'] = sprite.scale.x;
+    sprite['zoomy'] = sprite.scale.y;
+    sprite.anchor.set(anchor);
+    sprite['anchorx'] = sprite.anchor.x;
+    sprite['anchory'] = sprite.anchor.y;
     app.stage.addChild(sprite);
     if (container) container.addChild(sprite);
     return sprite;
@@ -35,272 +41,92 @@ let initSprite = (file, x, y, size, container) => {
 // SPRITE SETUP ------------------------------------------------------------ //
 
 // Sprite pool
-let bg      = initSprite('background', 0, -sh/4, 0.34, main);
-let cluster = initSprite('cluster', sw/6, sh/4, 2, main);
+let bg          = initSprite('background', scx, scy, 0.34, 0.5, background);
+let cluster     = initSprite('cluster', sw*0.7, sh*0.7, 2, 0.5, background);
+let astronaut   = initSprite('astronaut', sw*0.15, scy, 0.4, 0.5, background);
+let sliderMain  = initSprite('slider', scx, sh*0.08, 0.6, 0.5, ui);
+let sliderDial  = initSprite('nub', scx, sh*0.08, 0.6, 0.5, ui);
+let buttonOut   = initSprite('out', sw*0.17, sh*0.87, 0.6, 0.5, ui);
+let buttonIn    = initSprite('in', sw-sw*0.17, sh*0.87, 0.6, 0.5, ui);
 
 // "Black hole" filter
 let bulge = new BulgePinchFilter({
-    center: [0.5, 0.5],
-    radius: 100,
+    center: [0.75, 0.5],
+    radius: 125,
     strength: 2,
 });
-main.filters = [bulge];
+background.filters = [bulge];
 
 // Push containers to stage
-app.stage.addChild(main);
+app.stage.addChild(background);
+app.stage.addChild(ui);
 
 // ANIMATION SETUP --------------------------------------------------------- //
+
+// Eases
+let Ease = {
+    lin:        x => x,
+    sinein:     x => 1 - Math.cos((x * Math.PI) / 2),
+    sineout:    x => Math.sin((x * Math.PI) / 2),
+    sines:      x => -(Math.cos(Math.PI * x) - 1) / 2,
+    quadin:     x => x * x,
+    quadout:    x => 1 * (1 - x) * (1 - x),
+    quads:      x => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2,
+    circout:    x => Math.sqrt(1 - Math.pow(x - 1, 2)),
+};
+
+// Animate an object
+let animate = (obj, duration, ease, amp, attrib) => {
+    return new Promise( (resolve, reject) => {
+        // Add initial attributes
+        let start = {};
+        start[attrib] = obj[attrib];
+        // Ticker stuff
+        let t0 = Date.now()/1000;
+        let loop = () => {
+            let t = Date.now()/1000 - t0;
+            let delta = t / duration;
+            let alpha = ease(delta);
+            console.log(attrib);
+            if (delta >= 1) {
+                obj[attrib] = amp;
+                resolve();
+                return;
+            }
+            let lerp = (a, b, n) => (1 - n) * a + n * b;
+            obj[attrib] = lerp(start[attrib], amp, alpha);
+            obj[attrib]['animationID'] = requestAnimationFrame(loop);
+        };
+        cancelAnimationFrame(obj[attrib]['animationID']);
+        loop();
+    });
+};
+
 // ANIMATION EXECUTION ----------------------------------------------------- //
+
+let floatSin = async (sprite, duration, attrib, start, amp) => {
+    await animate(sprite, duration/4, Ease.sineout, start+amp, attrib);
+    await animate(sprite, duration/2, Ease.sines, start-amp, attrib);
+    await animate(sprite, duration/4, Ease.sinein, start, attrib);
+    floatSin(sprite, duration, attrib, start, amp);
+};
+
+/*
+let ?? = async (x) => {
+    sprite.anchor.set(0.5);
+}
+*/
+
+let linRotate = async (sprite, duration) => {
+    sprite.rotation = 0;
+    await animate(sprite, duration, Ease.lin, -2*pi, 'rotation');
+    linRotate(sprite, duration);
+};
+
+// Default idle animations
+floatSin(astronaut, 12, 'y', scy, -20,);
+floatSin(astronaut, 7, 'rotation', pi/18, -pi/24);
+linRotate(cluster, 250);
+linRotate(bg, 500);
+
 // ?? ---------------------------------------------------------------------- //
-
-//Slider Logic
-function makeSlider() {
-    let slideContain = new PIXI.Container();
-    slideContain.interactive = true;
-    slideContain.value = 0;
-
-    let track = new PIXI.Graphics();
-    track.beginFill(0xCCCCCC);
-    track.drawRoundedRect(200, -10, 300, 20);
-    track.alpha = .7;
-
-    slideContain.addChild(track);
-
-    let slide = new PIXI.Graphics();
-    slide.interactive = true;
-    slide.beginFill(0xEEEEEE);
-    slide.drawRoundedRect(175, -25, 50, 50);
-    slide.alpha - .95;
-
-    slideContain.addChild(slide);
-
-    slide.dragging = false;
-    slide.on("pointerdown", e => {
-        slide.dragging = true;
-    });
-
-    slide.on("pointermove", e => {
-        if (slide.dragging) {
-            let newX = e.data.global.x - slideContain.getGlobalPosition().x - 200;
-            let newY = e.data.global.y - slideContain.getGlobalPosition().y;
-
-            if (newX > track.width) newX = track.width;
-            if (newX < 0) newX = 0;
-
-            slideContain.value = newX / track.width;
-            slide.x = newX;
-            bulge.uniforms.strength = (newX);
-        }
-    });
-    slide.on("pointerup", e => {
-        slide.dragging = false;
-    });
-    slide.on("pointerupoutside", e => {
-        slide.dragging = false;
-    });
-    return slideContain;
-};
-
-let slideContain = makeSlider();
-app.stage.addChild(slideContain);
-
-//Scene Logic
-
-//Scene 1
-let scene1 = new PIXI.Container();
-
-let astronaut = PIXI.Sprite.from("img/astronaut.png");
-astronaut.scale.set(.45);
-astronaut.y = 100;
-scene1.addChild(astronaut);
-
-let nextButton = UI.Button(0, 0, "In");
-nextButton.x = app.view.width - nextButton.width;
-nextButton.y = app.view.height - nextButton.height;
-app.stage.addChild(scene1);
-app.stage.addChild(nextButton);
-
-//SCene 2
-let scene2 = new PIXI.Container();
-let backButton = UI.Button(0, 0, "Out");
-backButton.x = 0;
-backButton.y = 380;
-app.stage.addChild(scene2);
-app.stage.addChild(backButton);
-
-//Animation logic
-
-//Pause animation function
-function pause(ms) {
-    return new Promise((resolve, reject) => {
-        setTimeout(resolve, ms);
-    });
-}
-
-//Stop animation function
-Animate.stop = function (obj) {
-    cancelAnimationFrame(obj).animationID;
-}
-
-//Director object to manage scenes
-var Director = {
-
-    //Object to hold list of scenes
-    scene: {},
-
-    //Add a scene to the list
-    addScene: (name, scene) => {
-
-        //If it exists throw an error
-        if (Director.scene[name])
-            throw "That scene already exists!"
-
-        //Otherwise add it
-        Director.scene[name] = scene;
-
-        //If it's the first scene, make it the active one
-        if (Director.currentScene == null)
-            Director.currentScene = name;
-
-    },
-
-    //Keep track of the current scene
-    currentScene: null,
-
-    //Change scene function
-    showScene: async (nextSceneName, params) => {
-
-        if (params == undefined) params = {};
-
-        let currentScene = Director.scene[Director.currentScene];
-        let nextScene = Director.scene[nextSceneName];
-
-        if (params.transition == undefined)
-            params.transition = Director.cut;
-
-        await params.transition(currentScene, nextScene, params);
-
-        Director.currentScene = nextSceneName;
-
-    },
-
-    //
-    //Transitions for changing scenes
-    //
-
-    //Cut (no transition)
-    cut: async (currentScene, nextScene, params) => {
-        app.stage.removeChild(currentScene);
-        app.stage.addChild(nextScene);
-    },
-
-    //Fade between spaghetti
-    spaghetti: async (currentScene, nextScene, params) => {
-        //Check duration
-        if (params == undefined) params = {};
-        if (params.duration == undefined) params.duration = 500;
-
-        //Fade out current scene
-        //Translate astronaut
-        await Animate.to(astronaut, { x: 250, y: 100, duration: 7000, easing: Animate.easeInOut });
-        //Tint Red
-        await Animate.to(astronaut, {
-            tint: 0xF58142,
-            duration: 2000,
-        });
-        //Fade out
-        await Animate.to(currentScene, {
-            alpha: 0,
-            duration: 3000
-        });
-        //Remove it from stage
-        app.stage.removeChild(currentScene);
-        //Set next scene to zero alpha
-        nextScene.alpha = 0;
-        //Add it to the stage
-        app.stage.addChild(nextScene);
-        //Fade it in
-        await Animate.to(nextScene, { alpha: 1, duration: params.duration / 2 });
-        //Reset the off-stage scene's alpha back
-        currentScene.alpha = 1;
-        //Reset astronaut to original position
-        Animate.to(astronaut, { x: 0, y: 100, duration: 10 });
-        //Remove tint
-        astronaut.tint = 0xFFFFFF;
-        float();
-    },
-
-    //Fade between
-    fade: async (currentScene, nextScene, params) => {
-
-        //Check duration
-        if (params == undefined) params = {};
-        if (params.duration == undefined) params.duration = 500;
-
-        //Fade out current scene
-        await Animate.to(currentScene, { alpha: 0, duration: params.duration / 2 });
-        //Remove it from stage
-        app.stage.removeChild(currentScene);
-        //Set next scene to zero alpha
-        nextScene.alpha = 0;
-        //Add it to the stage
-        app.stage.addChild(nextScene);
-        //Fade it in
-        await Animate.to(nextScene, { alpha: 1, duration: params.duration / 2 });
-        //Reset the off-stage scene's alpha back
-        currentScene.alpha = 1;
-    },
-};
-
-//Use Director setup to manage scenes alongside button clicks
-Director.addScene("first", scene1);
-Director.addScene("second", scene2);
-
-//First next button, goes to second scene
-nextButton.pointerdown = () => {
-    Director.showScene("second", { transition: Director.spaghetti });
-}
-
-//Buttons for second slide, goes to first scene
-backButton.pointerdown = () => {
-    Director.showScene("first", { transition: Director.fade });
-}
-
-//Animations
-
-//Astronaut idle floating animation
-async function float() {
-    await Animate.to(astronaut, {
-        x: 0, y: 50,
-        duration: 5000,
-        easing: Animate.easeInOut
-    });
-    await Animate.to(astronaut, {
-        x: 0, y: 120,
-        duration: 5000,
-        easing: Animate.easeInOut
-    });
-    float();
-}
-float();
-
-//Cluster idle animation
-async function jitter() {
-    await Animate.to(cluster, {
-        x: 210, y: 2, duration: 7000, easing: Animate.easeInOut
-    });
-    await Animate.to(cluster, {
-        x: 185, y: -1, duration: 7000, easing: Animate.easeInOut
-    });
-    jitter();
-}
-jitter();
-
-//Audio Event Listener
-let audio = document.createElement("audio");
-audio.autoplay = true;
-audio.src = "ambience.ogg";
-
-document.addEventListener("mousemove", () => {
-    audio.play();
-});
