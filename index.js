@@ -28,11 +28,7 @@ let initSprite = (file, x, y, size, anchor, container) => {
     sprite.x = x;
     sprite.y = y;
     sprite.scale.set(size);
-    sprite['zoomx'] = sprite.scale.x;
-    sprite['zoomy'] = sprite.scale.y;
     sprite.anchor.set(anchor);
-    sprite['anchorx'] = sprite.anchor.x;
-    sprite['anchory'] = sprite.anchor.y;
     app.stage.addChild(sprite);
     if (container) container.addChild(sprite);
     return sprite;
@@ -77,24 +73,26 @@ let Ease = {
 
 // Animate an object
 let animate = (obj, duration, ease, amp, attrib) => {
+    if (attrib.split('.').length != 1) {
+        obj = obj[attrib.split('.')[0]]
+        attrib = attrib.split('.')[1]
+    }
     return new Promise( (resolve, reject) => {
         // Add initial attributes
-        let start = {};
-        start[attrib] = obj[attrib];
+        let start = obj[attrib];
         // Ticker stuff
         let t0 = Date.now()/1000;
         let loop = () => {
             let t = Date.now()/1000 - t0;
             let delta = t / duration;
             let alpha = ease(delta);
-            console.log(attrib);
             if (delta >= 1) {
                 obj[attrib] = amp;
                 resolve();
                 return;
             }
             let lerp = (a, b, n) => (1 - n) * a + n * b;
-            obj[attrib] = lerp(start[attrib], amp, alpha);
+            obj[attrib] = lerp(start, amp, alpha);
             obj[attrib]['animationID'] = requestAnimationFrame(loop);
         };
         cancelAnimationFrame(obj[attrib]['animationID']);
@@ -111,11 +109,11 @@ let floatSin = async (sprite, duration, attrib, start, amp) => {
     floatSin(sprite, duration, attrib, start, amp);
 };
 
-/*
-let ?? = async (x) => {
-    sprite.anchor.set(0.5);
-}
-*/
+let floatCos = async (sprite, duration, attrib, start, amp) => {
+    await animate(sprite, duration/2, Ease.sines, start-amp, attrib);
+    await animate(sprite, duration/2, Ease.sines, start, attrib);
+    floatCos(sprite, duration, attrib, start, amp);
+};
 
 let linRotate = async (sprite, duration) => {
     sprite.rotation = 0;
@@ -127,6 +125,10 @@ let linRotate = async (sprite, duration) => {
 floatSin(astronaut, 12, 'y', scy, -20,);
 floatSin(astronaut, 7, 'rotation', pi/18, -pi/24);
 linRotate(cluster, 250);
+floatCos(cluster, 250, 'anchor.x', 0.4, -0.2);
+floatCos(cluster, 250, 'y', sh*0.7, sh*0.3);
 linRotate(bg, 500);
+floatCos(bg, 500, 'anchor.x', 0.5, -0.2/4);
+floatCos(bg, 500, 'y', scy, sh*0.3/4);
 
 // ?? ---------------------------------------------------------------------- //
