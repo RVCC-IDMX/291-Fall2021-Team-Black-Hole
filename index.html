@@ -64,12 +64,25 @@
         
        
         //container.addChild(nebula);
+        //cluster logic
         container.addChild(cluster);
         //nebula.x = 0;
         //nebula.y = -10;
         //nebula.scale.set(.75);
         //nebula.width = 750;
+
+        //star logic
+        // let starOne = new PIXI.Graphics();
+        // starOne.beginFill(0xAB25FF);
+        // starOne.drawCircle(350, 3, 25);
+        // starOne.x = 350;
+        // starOne.y = 250;
+        // starOne.scale = 25;
+        // container.addChild(starOne);
+
         app.stage.addChild(container);
+
+        
 
         //Step 2: Load filter
         let bulge = new BulgePinchFilter({
