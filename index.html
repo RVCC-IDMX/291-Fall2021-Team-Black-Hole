@@ -95,12 +95,13 @@
         starNine.scale.set(.3)
         starNine.x = 575;
         starNine.y = 265;
+        const starTen = PIXI.Sprite.from("img/star.png");
+        starTen.scale.set(.4);
+        starTen.x = 350;
+        starTen.y = 375;
 
 
         
-
-
-
         
         const container = new PIXI.Container();
         container.addChild(backgroundImage);
@@ -114,6 +115,7 @@
         container.addChild(starSeven);
         container.addChild(starEight);
         container.addChild(starNine);
+        container.addChild(starTen);
        
         //container.addChild(nebula);
         //cluster logic
