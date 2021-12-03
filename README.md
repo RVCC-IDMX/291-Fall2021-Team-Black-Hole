@@ -37,6 +37,8 @@ Example: bulge.uniforms.strength = [1 - 4, etc.]
 
 [Nebula](https://pngtree.com/back/down?id=MTIwNjU1MQ==&type=1&time=1637788235&token=MTg1NzkzMDkzZjVmZTJkN2U0MDUyOThkZWE0NWJiMzA=)
 
+[Star](https://www.freeiconspng.com/downloadimg/634)
+
 [Favicon](https://www.transparentpng.com/download/black-hole-_247.html)
 
 ### Audio
