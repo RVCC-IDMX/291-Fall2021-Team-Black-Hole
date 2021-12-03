@@ -403,12 +403,27 @@
 
         cluster.pivot.x = 100;
         cluster.pivot.y = 140;
+
+        var numStars = 1000;
         
-        app.ticker.add((delta) => {
-            cluster.rotation += .002 * delta;
-            
-        })
+        //starOne.alpha = .1;
+        requestAnimationFrame(animate);
+        function animate() {
+            requestAnimationFrame( animate );
+            var time = Date.now() / 1000;
+            for (var i=0; i < numStars; ++i) {
+                var freq = i/numStars;
+                var ampl = i*numStars;
+                starOne.alpha = freq * Math.sin(time + ampl);
+            }
+        }
         
+        // async function flicker() {
+        //     app.ticker.add((delta) => {
+        //         starOne.alpha = .002 * delta;
+        //     });
+        // }
+        // flicker();
 
     </script>
     <p style="font-family: 'Courier New', Courier, monospace;">Authors: Tim, Fender, Spencer</p>
