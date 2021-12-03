@@ -404,17 +404,29 @@
         cluster.pivot.x = 100;
         cluster.pivot.y = 140;
 
-        var numStars = 1000;
+        //Star variables
+        var numStars = 500;
         
         //starOne.alpha = .1;
         requestAnimationFrame(animate);
         function animate() {
             requestAnimationFrame( animate );
             var time = Date.now() / 1000;
+            var timeTwo = Date.now() / 900;
+            var timeThree = Date.now() / 800;
             for (var i=0; i < numStars; ++i) {
                 var freq = i/numStars;
                 var ampl = i*numStars;
                 starOne.alpha = freq * Math.sin(time + ampl);
+                starTwo.alpha = freq * Math.cos(time + ampl);
+                starThree.alpha = freq * Math.cos(timeThree + ampl);
+                starFour.alpha = freq * Math.sin(timeTwo + ampl);
+                starFive.alpha = freq * Math.cos(time + ampl);
+                starSix.alpha = freq * Math.sin(time + ampl);
+                starSeven.alpha = freq * Math.cos(timeTwo + ampl);
+                starEight.alpha = freq * Math.sin(time + ampl);
+                starNine.alpha = freq * Math.cos(timeTwo + ampl);
+                starTen.alpha = freq * Math.sin(timeThree + ampl);
             }
         }
         
