@@ -60,63 +60,14 @@
         cluster.scale.set(2);
         cluster.x = 200;
 
-        const starOne = PIXI.Sprite.from("img/star.png");
-        starOne.scale.set(.25)
-        starOne.x = 50;
-        starOne.y = 35;
-        const starTwo = PIXI.Sprite.from("img/star.png");
-        starTwo.x = 250;
-        starTwo.y = 10;
-        const starThree = PIXI.Sprite.from("img/star.png");
-        starThree.scale.set(.5);
-        starThree.x = 200;
-        starThree.y = -45;
-        const starFour = PIXI.Sprite.from("img/star.png");
-        starFour.scale.set(.6);
-        starFour.x = 225;
-        starFour.y = 250;
-        const starFive = PIXI.Sprite.from("img/star.png");
-        starFive.scale.set(.2);
-        starFive.x = 85;
-        starFive.y = 325;
-        const starSix = PIXI.Sprite.from("img/star.png");
-        starSix.scale.set(.35);
-        starSix.x = 475;
-        starSix.y = 150;
-        const starSeven = PIXI.Sprite.from("img/star.png");
-        starSeven.scale.set(.45);
-        starSeven.x = 525;
-        starSeven.y = -15;
-        const starEight = PIXI.Sprite.from("img/star.png");
-        starEight.scale.set(.2);
-        starEight.x = 350;
-        starEight.y = 350;
-        const starNine = PIXI.Sprite.from("img/star.png");
-        starNine.scale.set(.3)
-        starNine.x = 575;
-        starNine.y = 265;
-        const starTen = PIXI.Sprite.from("img/star.png");
-        starTen.scale.set(.4);
-        starTen.x = 350;
-        starTen.y = 375;
-
         //meteor
         //const rockContainer
         
         
         const container = new PIXI.Container();
-        container.addChild(backgroundImage);
+        //container.addChild(backgroundImage);
         container.addChild(cluster);
-        container.addChild(starOne);
-        container.addChild(starTwo);
-        container.addChild(starThree);
-        container.addChild(starFour);
-        container.addChild(starFive);
-        container.addChild(starSix);
-        container.addChild(starSeven);
-        container.addChild(starEight);
-        container.addChild(starNine);
-        container.addChild(starTen);
+        
 
         const rockContainer = new PIXI.Container();
         container.addChild(rockContainer);
@@ -137,6 +88,46 @@
         app.ticker.add((delta) => {
             rockContainer.rotation -= .005 * delta;
         })
+
+        const textureStar = PIXI.Texture.from('img/circle.png');
+
+        const numStars = 1000;
+
+        for (let i = 0; i < numStars; i++){
+            //const star = new PIXI.Sprite(texture);
+            let s = createStar();
+            let k = createStar();
+            let j = createStar();
+            requestAnimationFrame(animate);
+            function animate(){
+                requestAnimationFrame(animate);
+                let time = Date.now()/1000;
+                let timeTwo = Date.now() / 500;
+                let timeThree = Date.now() / 300;
+                let freq = i/numStars;
+                let ampl = i/numStars;
+                s.alpha = freq * Math.sin(time + ampl);
+                k.alpha = freq * Math.cos(timeTwo + ampl);
+                j.alpha = freq * Math.sin(timeThree + ampl);
+            }
+            container.addChild(s);
+            container.addChild(k);
+            container.addChild(j);
+        }
+
+        function createStar() {
+            let star = new PIXI.Sprite(textureStar);
+            
+            const scale = Math.random() * 2;
+            //star.scale.set(Math.random());
+            star.position.x = Math.random() * 5000;
+            star.position.y = Math.random() * 1000;
+            
+            star.alpha = .7;
+            star.scale.x = scale / 300;
+            star.scale.y = scale / 300;
+            return star;
+        }
         
        
         //container.addChild(nebula);
@@ -427,30 +418,30 @@
         cluster.pivot.y = 140;
 
         //Star variables
-        var numStars = 500;
+        //var numStars = 500;
         
         //starOne.alpha = .1;
-        requestAnimationFrame(animate);
-        function animate() {
-            requestAnimationFrame( animate );
-            var time = Date.now() / 1000;
-            var timeTwo = Date.now() / 900;
-            var timeThree = Date.now() / 800;
-            for (var i=0; i < numStars; ++i) {
-                var freq = i/numStars;
-                var ampl = i*numStars;
-                starOne.alpha = freq * Math.sin(time + ampl);
-                starTwo.alpha = freq * Math.cos(time + ampl);
-                starThree.alpha = freq * Math.cos(timeThree + ampl);
-                starFour.alpha = freq * Math.sin(timeTwo + ampl);
-                starFive.alpha = freq * Math.cos(time + ampl);
-                starSix.alpha = freq * Math.sin(time + ampl);
-                starSeven.alpha = freq * Math.cos(timeTwo + ampl);
-                starEight.alpha = freq * Math.sin(time + ampl);
-                starNine.alpha = freq * Math.cos(timeTwo + ampl);
-                starTen.alpha = freq * Math.sin(timeThree + ampl);
-            }
-        }
+        // requestAnimationFrame(animate);
+        // function animate() {
+        //     requestAnimationFrame( animate );
+        //     var time = Date.now() / 1000;
+        //     var timeTwo = Date.now() / 900;
+        //     var timeThree = Date.now() / 800;
+        //     for (var i=0; i < numStars; ++i) {
+        //         var freq = i/numStars;
+        //         var ampl = i*numStars;
+        //         starOne.alpha = freq * Math.sin(time + ampl);
+        //         starTwo.alpha = freq * Math.cos(time + ampl);
+        //         starThree.alpha = freq * Math.cos(timeThree + ampl);
+        //         starFour.alpha = freq * Math.sin(timeTwo + ampl);
+        //         starFive.alpha = freq * Math.cos(time + ampl);
+        //         starSix.alpha = freq * Math.sin(time + ampl);
+        //         starSeven.alpha = freq * Math.cos(timeTwo + ampl);
+        //         starEight.alpha = freq * Math.sin(time + ampl);
+        //         starNine.alpha = freq * Math.cos(timeTwo + ampl);
+        //         starTen.alpha = freq * Math.sin(timeThree + ampl);
+        //     }
+        // }
         
         // async function flicker() {
         //     app.ticker.add((delta) => {
