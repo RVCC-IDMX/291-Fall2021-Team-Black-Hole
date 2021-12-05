@@ -100,7 +100,8 @@
         starTen.x = 350;
         starTen.y = 375;
 
-
+        //meteor
+        //const rockContainer
         
         
         const container = new PIXI.Container();
@@ -116,6 +117,27 @@
         container.addChild(starEight);
         container.addChild(starNine);
         container.addChild(starTen);
+
+        const rockContainer = new PIXI.Container();
+        container.addChild(rockContainer);
+        const texture = PIXI.Texture.from('img/meteor.png');
+        const meteor = new PIXI.Sprite(texture);
+        rockContainer.addChild(meteor);
+        meteor.scale.set(.15);
+        meteor.tint = 0x808080;
+
+        rockContainer.x = app.screen.width / 2;
+        rockContainer.y = app.screen.height / 2;
+
+        //container.pivot.x = container.width/4;
+        //container.pivot.y = container.height/4;
+        rockContainer.pivot.x = 320;
+        rockContainer.pivot.y = 240;
+
+        app.ticker.add((delta) => {
+            rockContainer.rotation -= .005 * delta;
+        })
+        
        
         //container.addChild(nebula);
         //cluster logic
