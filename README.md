@@ -39,6 +39,8 @@ Example: bulge.uniforms.strength = [1 - 4, etc.]
 
 [Star](https://www.freeiconspng.com/downloadimg/634)
 
+[Circle](https://pngtree.com/element/down?id=NDcwNDQwMQ==&type=1&time=1638728950&token=NWUxNDc4ZjY2MDRiYTU0NWMzZjQ1MmU2ZWYwODVkOTA=&t=0)
+
 [Meteor](https://www.pngplay.com/image/69268)
 
 [Favicon](https://www.transparentpng.com/download/black-hole-_247.html)
