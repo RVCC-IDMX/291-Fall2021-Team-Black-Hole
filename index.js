@@ -44,7 +44,7 @@ let bg          = initSprite('background', scx, scy, 0.34, 0.5, background);
 let cluster     = initSprite('cluster', sw*0.7, sh*0.7, 2, 0.5, background);
 let astronaut   = initSprite('astronaut', sw*0.15, scy, 0.4, 0.5, background);
 let sliderMain  = initSprite('slider', scx, sh*0.08, 0.6, 0.5, ui);
-let sliderDial  = initSprite('nub', scx, sh*0.078, 0.6, 0.5, ui);
+let sliderDial  = initSprite('nub', scx, sh*0.079, 0.6, 0.5, ui);
 let buttonOut   = initSprite('out', sw*0.17, sh*0.87, 0.6, 0.5, ui);
 let buttonIn    = initSprite('in', sw-sw*0.17, sh*0.87, 0.6, 0.5, ui);
 
@@ -146,8 +146,8 @@ let nubTexture = PIXI.Texture.from('img/nub.png');
 let nubTextureHover = PIXI.Texture.from('img/nub2.png');
 
 // Set hover properties
-sliderDial.on("pointerover", e => sliderDial.texture = nubTextureHover);
-sliderDial.on("pointerout", e => sliderDial.texture = nubTexture);
+sliderDial.on("pointerdown", e => sliderDial.texture = nubTextureHover);
+sliderDial.on("pointerup", e => sliderDial.texture = nubTexture);
 
 // Set click properties
 sliderDial.on("pointerdown", e => sliderDial.dragging = true);
@@ -155,9 +155,9 @@ sliderDial.on("pointermove", e => {
     if (sliderDial.dragging) {
         // slider values
         let xpos = e.data.global.x;
-        let xval = minMax(xpos, 194, sliderMain.width*0.825+194);
+        let xval = minMax(xpos, 193.5, sliderMain.width*0.825+193.5);
         sliderDial.x = xval
-        let xcalc = (xval - 194) / (sliderMain.width*0.825);
+        let xcalc = (xval - 193.5) / (sliderMain.width*0.825);
         // curve fit (0, 50), (0.5, 100), (1, 400)
         let strength = 500 * Math.pow(xcalc, 2) - 150 * xcalc + 50;
         let size = 100 * (xcalc + 0.5)
@@ -166,3 +166,21 @@ sliderDial.on("pointermove", e => {
     }
 });
 sliderDial.on("pointerup", e => sliderDial.dragging = false);
+
+// EXTRA UI ---------------------------------------------------------------- //
+
+// Out button
+buttonOut.interactive = true;
+buttonOut.cursor = 'pointer';
+let outTexture = PIXI.Texture.from('img/out.png');
+let outTextureHover = PIXI.Texture.from('img/out2.png');
+buttonOut.on("pointerdown", e => buttonOut.texture = outTextureHover);
+buttonOut.on("pointerup", e => buttonOut.texture = outTexture);
+
+// In button
+buttonIn.interactive = true;
+buttonIn.cursor = 'pointer';
+let inTexture = PIXI.Texture.from('img/in.png');
+let inTextureHover = PIXI.Texture.from('img/in2.png');
+buttonIn.on("pointerdown", e => buttonIn.texture = inTextureHover);
+buttonIn.on("pointerup", e => buttonIn.texture = inTexture);
