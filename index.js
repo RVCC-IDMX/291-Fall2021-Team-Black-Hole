@@ -34,6 +34,9 @@ let initSprite = (file, x, y, size, anchor, container) => {
     return sprite;
 };
 
+// minmax function
+let minMax = (num, min, max) => Math.min(Math.max(parseInt(num), min), max);
+
 // SPRITE SETUP ------------------------------------------------------------ //
 
 // Sprite pool
@@ -41,15 +44,15 @@ let bg          = initSprite('background', scx, scy, 0.34, 0.5, background);
 let cluster     = initSprite('cluster', sw*0.7, sh*0.7, 2, 0.5, background);
 let astronaut   = initSprite('astronaut', sw*0.15, scy, 0.4, 0.5, background);
 let sliderMain  = initSprite('slider', scx, sh*0.08, 0.6, 0.5, ui);
-let sliderDial  = initSprite('nub', scx, sh*0.08, 0.6, 0.5, ui);
+let sliderDial  = initSprite('nub', scx, sh*0.078, 0.6, 0.5, ui);
 let buttonOut   = initSprite('out', sw*0.17, sh*0.87, 0.6, 0.5, ui);
 let buttonIn    = initSprite('in', sw-sw*0.17, sh*0.87, 0.6, 0.5, ui);
 
 // "Black hole" filter
 let bulge = new BulgePinchFilter({
     center: [0.75, 0.5],
-    radius: 125,
-    strength: 2,
+    radius: 100,
+    strength: 100,
 });
 background.filters = [bulge];
 
@@ -131,4 +134,35 @@ linRotate(bg, 500);
 floatCos(bg, 500, 'anchor.x', 0.5, -0.2/4);
 floatCos(bg, 500, 'y', scy, sh*0.3/4);
 
-// ?? ---------------------------------------------------------------------- //
+// BLACK HOLE SIZE ------------------------------------------------------------ //
+
+// Set attributes
+sliderDial.interactive = true;
+sliderDial.dragging = false;
+sliderDial.cursor = 'pointer';
+
+// Preload button textures
+let nubTexture = PIXI.Texture.from('img/nub.png');
+let nubTextureHover = PIXI.Texture.from('img/nub2.png');
+
+// Set hover properties
+sliderDial.on("pointerover", e => sliderDial.texture = nubTextureHover);
+sliderDial.on("pointerout", e => sliderDial.texture = nubTexture);
+
+// Set click properties
+sliderDial.on("pointerdown", e => sliderDial.dragging = true);
+sliderDial.on("pointermove", e => {
+    if (sliderDial.dragging) {
+        // slider values
+        let xpos = e.data.global.x;
+        let xval = minMax(xpos, 194, sliderMain.width*0.825+194);
+        sliderDial.x = xval
+        let xcalc = (xval - 194) / (sliderMain.width*0.825);
+        // curve fit (0, 50), (0.5, 100), (1, 400)
+        let strength = 500 * Math.pow(xcalc, 2) - 150 * xcalc + 50;
+        let size = 100 * (xcalc + 0.5)
+        bulge.uniforms.strength = strength;
+        bulge.uniforms.radius = size;
+    }
+});
+sliderDial.on("pointerup", e => sliderDial.dragging = false);
