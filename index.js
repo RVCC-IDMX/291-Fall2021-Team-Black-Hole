@@ -89,7 +89,7 @@ sliderDial.on("pointermove", e => {
         sliderDial.x = xval
         let xcalc = (xval - 193.5) / (sliderMain.width*0.825);
         // curve fit (0, 50), (0.5, 100), (1, 400)
-        let strength = 500 * Math.pow(xcalc, 2) - 150 * xcalc + 50;
+        let strength = 500 * xcalc**2 - 150 * xcalc + 50;
         let size = 100 * (xcalc + 0.5)
         bulge.uniforms.strength = strength;
         bulge.uniforms.radius = size;
@@ -157,8 +157,8 @@ let animate = (obj, duration, ease, amp, attrib) => {
             } else {
                 obj.tint = 0;
                 for (let i=0; i<3; i++) {
-                    let a0 = (start & (255 * Math.pow(256, i))) >> (8*i);
-                    let a = (amp & (255 * Math.pow(256, i))) >> (8*i);
+                    let a0 = (start & (255*256**i)) >> (8*i);
+                    let a = (amp & (255*256**i)) >> (8*i);
                     obj.tint += Math.floor(lerp(a0, a, alpha)) << (8*i);
                 }
             }
