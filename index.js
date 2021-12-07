@@ -155,23 +155,12 @@ let animate = (obj, duration, ease, amp, attrib) => {
             if (attrib != 'tint') {
                 obj[attrib] = lerp(start, amp, alpha);
             } else {
-                let rgb = {
-                    r: (start & 0xFF0000) >> 16,
-                    g: (start & 0x00FF00) >> 8,
-                    b: (start & 0x0000FF)
+                obj.tint = 0;
+                for (let i=0; i<3; i++) {
+                    let a0 = (start & (255 * Math.pow(256, i))) >> (8*i);
+                    let a = (amp & (255 * Math.pow(256, i))) >> (8*i);
+                    obj.tint += Math.floor(lerp(a0, a, alpha)) << (8*i);
                 }
-                let rgbEnd = {
-                    r: (amp & 0xFF0000) >> 16,
-                    g: (amp & 0x00FF00) >> 8,
-                    b: (amp & 0x0000FF)
-                }
-                let rgbNow = {
-                    r: Math.floor(lerp(rgb.r, rgbEnd.r, alpha)),
-                    g: Math.floor(lerp(rgb.g, rgbEnd.g, alpha)),
-                    b: Math.floor(lerp(rgb.b, rgbEnd.b, alpha))
-                }
-                obj.tint = (rgbNow.r << 16) + (rgbNow.g << 8) + rgbNow.b;
-                console.log('xd');
             }
             obj[attrib]['animationID'] = requestAnimationFrame(loop);
         };
