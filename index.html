@@ -84,6 +84,10 @@
             rockContainer.rotation -= .005 * delta;
         })
 
+        //
+        //
+        //
+        //START HERE FOR ANIMATED STAR BACKGROUND
         //Animate background
         const textureStar = PIXI.Texture.from('img/circle.png');
         const numStars = 1000;
@@ -122,6 +126,10 @@
             star.scale.y = scale / 300;
             return star;
         }
+        
+        //END ANIMATED STAR BACKGROUND
+        //
+        //
         
         //Add container to stage
         app.stage.addChild(container);
