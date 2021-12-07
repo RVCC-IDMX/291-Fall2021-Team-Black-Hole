@@ -24,6 +24,7 @@ let ui = new PIXI.Container();
 
 // FUNCTIONS --------------------------------------------------------------- //
 
+// Sprite initializer
 let initSprite = (file, x, y, size, anchor, container) => {
     let sprite = PIXI.Sprite.from(`img/${file}.png`);
     sprite.x = x;
@@ -35,8 +36,7 @@ let initSprite = (file, x, y, size, anchor, container) => {
     return sprite;
 };
 
-// minmax function
-let minMax = (num, min, max) => Math.min(Math.max(parseInt(num), min), max);
+let clamp = (num, min, max) => Math.min(Math.max(parseInt(num), min), max);
 
 // SPRITE SETUP ------------------------------------------------------------ //
 
@@ -48,8 +48,6 @@ let sliderMain  = initSprite('slider', scx, sh*0.08, 0.6, 0.5, ui);
 let sliderDial  = initSprite('nub', scx, sh*0.079, 0.6, 0.5, ui);
 let buttonOut   = initSprite('out', sw*0.17, sh*0.87, 0.6, 0.5, ui);
 let buttonIn    = initSprite('in', sw-sw*0.17, sh*0.87, 0.6, 0.5, ui);
-
-// A
 
 // "Black hole" filter
 let bulge = new BulgePinchFilter({
@@ -85,7 +83,7 @@ sliderDial.on("pointermove", e => {
     if (sliderDial.dragging) {
         // slider values
         let xpos = e.data.global.x;
-        let xval = minMax(xpos, 193.5, sliderMain.width*0.825+193.5);
+        let xval = clamp(xpos, 193.5, sliderMain.width*0.825+193.5);
         sliderDial.x = xval
         let xcalc = (xval - 193.5) / (sliderMain.width*0.825);
         // curve fit (0, 50), (0.5, 100), (1, 400)
