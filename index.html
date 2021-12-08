@@ -253,9 +253,19 @@
         let scene2 = new PIXI.Container();
 
         //Create scene text
-        let scene2Text = new PIXI.Text('scene two', {fill:0xFFFFFF});
+        let scene2Text = new PIXI.Text('What is a black hole?', {fill:0xFFFFFF});
         scene2.addChild(scene2Text);
 
+        let scene2Content = new PIXI.Text('A black hole is recognized as an "astronomical object" with a gravitational pull so strong nothing can escape it, not even light ', {fill:0xFFFFFF, fontSize:20, align:'center', wordWrap:true, wordWrapWidth:500})
+        scene2Content.x = 75;
+        scene2Content.y = 50;
+        scene2.addChild(scene2Content);
+        
+        let scene2ContentTwo = new PIXI.Text('The most common way a black hole forms is stellar death, a star will explode into a supernova at the end of its life, the release of force allowing the intense gravity to collapse. Black Holes can grow and evaporate too!', {fill:0xFFFFFF, fontSize: 20, align:'center', wordWrap:true, wordWrapWidth:500,});
+        scene2ContentTwo.x=75;
+        scene2ContentTwo.y = 180;
+        scene2.addChild(scene2ContentTwo);
+        
         //Create back button
         let backButton = UI.Button(0, 380, 'back');
         scene2.addChild(backButton);
