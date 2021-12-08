@@ -130,7 +130,7 @@
         //END ANIMATED STAR BACKGROUND
         //
         //
-        
+
         //Add container to stage
         app.stage.addChild(container);
 
@@ -198,6 +198,8 @@
         //Scene Logic
 
         //Scene 1
+
+        //Scene 5
         let scene1 = new PIXI.Container();
 
         let astronaut = PIXI.Sprite.from("img/astronaut.png");
@@ -205,19 +207,19 @@
         astronaut.y = 100;
         scene1.addChild(astronaut);
 
-        let nextButton = UI.Button(0, 0, "In");
-        nextButton.x = app.view.width - nextButton.width;
-        nextButton.y = app.view.height - nextButton.height;
+        let inButton = UI.Button(0, 0, "In");
+        inButton.x = app.view.width - inButton.width;
+        inButton.y = 0;
         app.stage.addChild(scene1);
-        app.stage.addChild(nextButton);
+        app.stage.addChild(inButton);
 
-        //SCene 2
+        //SCene 6
         let scene2 = new PIXI.Container();
-        let backButton = UI.Button(0, 0, "Out");
-        backButton.x = 0;
-        backButton.y = 380;
+        let outButton = UI.Button(0, 0, "Out");
+        outButton.x = 0;
+        outButton.y = 0;
         app.stage.addChild(scene2);
-        app.stage.addChild(backButton);
+        app.stage.addChild(outButton);
 
         //Animation logic
 
@@ -348,12 +350,12 @@
         Director.addScene("second", scene2);
 
         //First next button, goes to second scene
-        nextButton.pointerdown = () => {
+        inButton.pointerdown = () => {
             Director.showScene("second", { transition: Director.spaghetti });
         }
 
         //Buttons for second slide, goes to first scene
-        backButton.pointerdown = () => {
+        outButton.pointerdown = () => {
             Director.showScene("first", { transition: Director.fade });
         }
 

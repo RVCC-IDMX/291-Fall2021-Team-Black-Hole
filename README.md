@@ -43,6 +43,8 @@ Example: bulge.uniforms.strength = [1 - 4, etc.]
 
 [Meteor](https://www.pngplay.com/image/69268)
 
+[Window](https://gymrocket.com/gym-rocket/rocket-window/)
+
 [Favicon](https://www.transparentpng.com/download/black-hole-_247.html)
 
 ### Audio
