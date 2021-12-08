@@ -256,7 +256,7 @@
         let scene2Text = new PIXI.Text('What is a black hole?', {fill:0xFFFFFF});
         scene2.addChild(scene2Text);
 
-        let scene2Content = new PIXI.Text('A black hole is recognized as an "astronomical object" with a gravitational pull so strong nothing can escape it, not even light ', {fill:0xFFFFFF, fontSize:20, align:'center', wordWrap:true, wordWrapWidth:500})
+        let scene2Content = new PIXI.Text('A black hole is recognized as an "astronomical object" with a gravitational pull so strong nothing can escape it, not even light ', {fill:0xFFFFFF, fontSize:20, align:'center', wordWrap:true, wordWrapWidth:500});
         scene2Content.x = 75;
         scene2Content.y = 50;
         scene2.addChild(scene2Content);
@@ -288,12 +288,12 @@
         scene3Content.y = 50;
         scene3.addChild(scene3Content);
 
-        let scene3ContentTwo = new PIXI.Text('- Red shift: Gravity is strong enough to shift colors to the red part of the spectrum. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500})
+        let scene3ContentTwo = new PIXI.Text('- Red shift: Gravity is strong enough to shift colors to the red part of the spectrum. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
         scene3ContentTwo.x = 75;
         scene3ContentTwo.y = 100;
         scene3.addChild(scene3ContentTwo);
 
-        let scene3ContentThree = new PIXI.Text('- Lensing: The gravity that the light being bent over the hole multiple times. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500})
+        let scene3ContentThree = new PIXI.Text('- Lensing: The gravity that the light being bent over the hole multiple times. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
         scene3ContentThree.x = 75;
         scene3ContentThree.y = 175;
         scene3.addChild(scene3ContentThree);
@@ -312,8 +312,28 @@
         let scene4 = new PIXI.Container();
 
         //Create scene text
-        let scene4Text = new PIXI.Text('scene four', {fill:0xFFFFFF});
+        let scene4Text = new PIXI.Text('Types of Black Holes', {fill:0xFFFFFF});
         scene4.addChild(scene4Text);
+
+        let scene4Content = new PIXI.Text('- Supermassive Black Holes: mass millions or billions the time of the Sun. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
+        scene4Content.x = 75;
+        scene4Content.y = 50;
+        scene4.addChild(scene4Content);
+
+        let scene4ContentTwo = new PIXI.Text('- Stellar: mass 5 to 10 times the Sun, called collapsars, observed as radial energy bursts or hypernova. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
+        scene4ContentTwo.x = 75;
+        scene4ContentTwo.y = 125;
+        scene4.addChild(scene4ContentTwo);
+
+        let scene4ContentThree = new PIXI.Text('- Intermediate: mass 100 to 500 times of the Sun. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
+        scene4ContentThree.x = 75;
+        scene4ContentThree.y = 200;
+        scene4.addChild(scene4ContentThree);
+
+        let scene4ContentFour = new PIXI.Text('- Miniature: called quantum mechanical black holes, theoretical and smaller than stellar holes.  ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
+        scene4ContentFour.x = 75;
+        scene4ContentFour.y = 250;
+        scene4.addChild(scene4ContentFour);
 
         //Create back button
         let backButtonThree = UI.Button(0,380,'back');
