@@ -253,7 +253,7 @@
         let scene2 = new PIXI.Container();
 
         //Create scene text
-        let scene2Text = new PIXI.Text('What is a black hole?', {fill:0xFFFFFF});
+        let scene2Text = new PIXI.Text('What is a Black Hole?', {fill:0xFFFFFF});
         scene2.addChild(scene2Text);
 
         let scene2Content = new PIXI.Text('A black hole is recognized as an "astronomical object" with a gravitational pull so strong nothing can escape it, not even light ', {fill:0xFFFFFF, fontSize:20, align:'center', wordWrap:true, wordWrapWidth:500});
@@ -283,7 +283,7 @@
         let scene3Text = new PIXI.Text('Characteristics of a Black Hole/Lensing', {fill:0xFFFFFF});
         scene3.addChild(scene3Text);
 
-        let scene3Content = new PIXI.Text('- Mass vs. Radius and the coin comparison. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500})
+        let scene3Content = new PIXI.Text('- Mass vs. Radius and the coin comparison. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
         scene3Content.x = 75;
         scene3Content.y = 50;
         scene3.addChild(scene3Content);
@@ -349,8 +349,33 @@
         let scene5 = new PIXI.Container();
 
         //Create scene text
-        let scene5Text = new PIXI.Text('scene five', {fill:0xFFFFFF});
+        let scene5Text = new PIXI.Text('Anatomy and Physics of a Black Hole', {fill:0xFFFFFF});
         scene5.addChild(scene5Text);
+
+        let scene5Content = new PIXI.Text('- Accretion Disk: the disklike cloud of energy, gas, plasma, dust particles that surround the body of a black hole. ', {fill:0xFFFFFF, fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
+        scene5Content.x = 75;
+        scene5Content.y = 50;
+        scene5.addChild(scene5Content);
+
+        let scene5ContentTwo = new PIXI.Text('- Event Horizon: the theoretical bounds of a black hole in which no light can escape. ', {fill:0xFFFFFF, fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
+        scene5ContentTwo.x = 75;
+        scene5ContentTwo.y = 100;
+        scene5.addChild(scene5ContentTwo);
+
+        let scene5ContentThree = new PIXI.Text('- Singularity: the center of a black hole, the infinitely compressed point of no return. ', {fill:0xFFFFFF, fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
+        scene5ContentThree.x = 75;
+        scene5ContentThree.y = 150;
+        scene5.addChild(scene5ContentThree);
+
+        let scene5ContentFour = new PIXI.Text('- Spaghettifiction: the vertical stretching and horizontal compression of objects into thin streams of particles. ', {fill:0xFFFFFF, fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
+        scene5ContentFour.x = 75;
+        scene5ContentFour.y = 200;
+        scene5.addChild(scene5ContentFour);
+
+        let scene5ContentFive = new PIXI.Text('- Space/time: thought of like a fabric, the relation between space and time is warped by gravity, making time go by slower the larger the mass and warp of spacetime and faster the smaller the mas and warp of spacetime, also called time dilation; blacholes are so dense, that energy cannot escape this warp. ', {fill:0xFFFFFF, fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500})
+        scene5ContentFive.x = 75;
+        scene5ContentFive.y = 250;
+        scene5.addChild(scene5ContentFive);
 
         //Create back button
         let backButtonFour = UI.Button(0,380,'back');
