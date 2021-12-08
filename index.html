@@ -19,25 +19,25 @@
     <script src="js/bezier.js"></script>
     <script src="js/animate.js"></script>
     <script src="js/ui_elements.js"></script>
-    
+
 </head>
 
 <body style="background-color: darkgray;">
-    
+
     <script>
-        
+
 
         //Audio Event Listener
-        let audio = document.createElement("audio");
-        audio.autoplay = true;
-        audio.src = "ambience.mp3";
+        // let audio = document.createElement("audio");
+        // audio.autoplay = true;
+        // audio.src = "ambience.mp3";
 
-        document.addEventListener("mousemove", () => {
-            audio.play();
-        });
+        // document.addEventListener("mousemove", () => {
+        //     audio.play();
+        // });
 
         //The Animate Background
-        
+
 
         //The App
         var app = new PIXI.Application({
@@ -65,7 +65,7 @@
         cluster.pivot.x = 100;
         cluster.pivot.y = 140;
         container.addChild(cluster);
-        
+
         //Meteor
         const rockContainer = new PIXI.Container();
         container.addChild(rockContainer);
@@ -93,19 +93,19 @@
         const numStars = 1000;
 
         //Animate Stars
-        for (let i = 0; i < numStars; i++){
+        for (let i = 0; i < numStars; i++) {
             //const star = new PIXI.Sprite(texture);
             let s = createStar();
             let k = createStar();
             let j = createStar();
             requestAnimationFrame(animate);
-            function animate(){
+            function animate() {
                 requestAnimationFrame(animate);
-                let time = Date.now()/1000;
+                let time = Date.now() / 1000;
                 let timeTwo = Date.now() / 500;
                 let timeThree = Date.now() / 300;
-                let freq = i/numStars;
-                let ampl = i/numStars;
+                let freq = i / numStars;
+                let ampl = i / numStars;
                 s.alpha = freq * Math.sin(time + ampl);
                 k.alpha = freq * Math.cos(timeTwo + ampl);
                 j.alpha = freq * Math.sin(timeThree + ampl);
@@ -126,7 +126,7 @@
             star.scale.y = scale / 300;
             return star;
         }
-        
+
         //END ANIMATED STAR BACKGROUND
         //
         //
@@ -193,74 +193,131 @@
         };
 
         let slideContain = makeSlider();
-        app.stage.addChild(slideContain);
 
+        //
+        //
+        //
+        //BEGIN SCENE LOGIC
         //Scene Logic
 
-        //Scene 1
+        //Title Screen
+        let title = new PIXI.Container();
 
-        //Scene 5
+        //Create Shuttle Window Sprite
+        let shuttleWindow = PIXI.Sprite.from('img/Rocket-Window.png');
+        shuttleWindow.scale.set(.5);
+        title.addChild(shuttleWindow);
+
+        //Create First Button to begin presentation
+        let beginButton = UI.Button(270,430,"ESCAPE POD");
+        beginButton.scale.set(.5);
+        title.addChild(beginButton);
+        
+        //Add title screen to stage
+        app.stage.addChild(title);
+
+        //Scene 1
+        
+        //Create scene as a container
         let scene1 = new PIXI.Container();
 
-        let astronaut = PIXI.Sprite.from("img/astronaut.png");
-        astronaut.scale.set(.45);
-        astronaut.y = 100;
+        //Create scene text
+        let textIntro = new PIXI.Text("interact with me", {fill:0xFFFFFF});
+        textIntro.x = 240;
+        textIntro.y = 250;
+        scene1.addChild(textIntro);
+
+        //Create sprite for scene
+        let astronaut = PIXI.Sprite.from('img/astronaut.png');
+        astronaut.scale.set(.5);
         scene1.addChild(astronaut);
 
-        let inButton = UI.Button(0, 0, "In");
-        inButton.x = app.view.width - inButton.width;
-        inButton.y = 0;
-        app.stage.addChild(scene1);
-        app.stage.addChild(inButton);
+        //Create In Button to enter black hole
+        let inButton = UI.Button(440,380,"In");
+        scene1.addChild(inButton);
 
-        //SCene 6
+        //Create Out Button to exit black hole
+        let outButton = UI.Button(0,380,"Out");
+        scene1.addChild(outButton);
+
+        //Create Next Button
+        let nextButton = UI.Button(220,380,"Information");
+        scene1.addChild(nextButton);
+
+        //Add slider to scene1
+        scene1.addChild(slideContain)
+
+        //Scene 2
         let scene2 = new PIXI.Container();
-        let outButton = UI.Button(0, 0, "Out");
-        outButton.x = 0;
-        outButton.y = 0;
-        app.stage.addChild(scene2);
-        app.stage.addChild(outButton);
 
-        //Animation logic
+        let scene2Text = new PIXI.Text('scene two', {fill:0xFFFFFF});
+        scene2.addChild(scene2Text);
 
-        //Pause animation function
-        function pause(ms) {
-            return new Promise((resolve, reject) => {
-                setTimeout(resolve, ms);
-            });
-        }
+        let backButton = UI.Button(0, 380, 'back');
+        scene2.addChild(backButton);
 
-        //Stop animation function
-        Animate.stop = function (obj) {
-            cancelAnimationFrame(obj).animationID;
-        }
+        let nextButtonTwo = UI.Button(440,380,'next');
+        scene2.addChild(nextButtonTwo);
 
-        //Director object to manage scenes
+        //Scene 3
+        let scene3 = new PIXI.Container();
+
+        let scene3Text = new PIXI.Text('scene three', {fill:0xFFFFFF});
+        scene3.addChild(scene3Text);
+
+        let backButtonTwo = UI.Button(0,380,'back');
+        scene3.addChild(backButtonTwo);
+
+        let nextButtonThree = UI.Button(440,380,'next');
+        scene3.addChild(nextButtonThree);
+
+        //Scene4
+        let scene4 = new PIXI.Container();
+
+        let scene4Text = new PIXI.Text('scene four', {fill:0xFFFFFF});
+        scene4.addChild(scene4Text);
+
+        let backButtonThree = UI.Button(0,380,'back');
+        scene4.addChild(backButtonThree);
+
+        let nextButtonFour = UI.Button(440,380,'next');
+        scene4.addChild(nextButtonFour);
+
+        //Scene 5
+        let scene5 = new PIXI.Container();
+
+        let scene5Text = new PIXI.Text('scene five', {fill:0xFFFFFF});
+        scene5.addChild(scene5Text);
+
+        let backButtonFour = UI.Button(0,380,'back');
+        scene5.addChild(backButtonFour);
+
+        // Director object to manage scenes
         var Director = {
 
-            //Object to hold list of scenes
+            // Object to hold list of scenes
             scene: {},
 
-            //Add a scene to the list
+            // Add a scene to the list
             addScene: (name, scene) => {
 
-                //If it exists throw an error
+                // If it exists throw text
                 if (Director.scene[name])
                     throw "That scene already exists!"
 
-                //Otherwise add it
+                // Otherwise add it
                 Director.scene[name] = scene;
 
-                //If it's the first scene, make it the active one
+                // If it's the first scene, make it the active one
                 if (Director.currentScene == null)
                     Director.currentScene = name;
 
             },
 
-            //Keep track of the current scene
+            // Keep track of the current scene
             currentScene: null,
 
-            //Change scene function
+            // Change scene function
             showScene: async (nextSceneName, params) => {
 
                 if (params == undefined) params = {};
@@ -278,86 +335,189 @@
             },
 
             //
-            //Transitions for changing scenes
+            // Transitions for changing scenes
             //
 
-            //Cut (no transition)
+            // Cut (no transition)
             cut: async (currentScene, nextScene, params) => {
                 app.stage.removeChild(currentScene);
                 app.stage.addChild(nextScene);
             },
 
-            //Fade between spaghetti
-            spaghetti: async (currentScene, nextScene, params) => {
-                //Check duration
-                if (params == undefined) params = {};
-                if (params.duration == undefined) params.duration = 500;
-
-                //Fade out current scene
-                //Translate astronaut
-                await Animate.to(astronaut, { x: 250, y: 100, duration: 7000, easing: Animate.easeInOut });
-                //Tint Red
-                await Animate.to(astronaut, {
-                    tint: 0xF58142,
-                    duration: 2000,
-                });
-                //Fade out
-                await Animate.to(currentScene, {
-                    alpha: 0,
-                    duration: 3000
-                });
-                //Remove it from stage
-                app.stage.removeChild(currentScene);
-                //Set next scene to zero alpha
-                nextScene.alpha = 0;
-                //Add it to the stage
-                app.stage.addChild(nextScene);
-                //Fade it in
-                await Animate.to(nextScene, { alpha: 1, duration: params.duration / 2 });
-                //Reset the off-stage scene's alpha back
-                currentScene.alpha = 1;
-                //Reset astronaut to original position
-                Animate.to(astronaut, { x: 0, y: 100, duration: 10 });
-                //Remove tint
-                astronaut.tint = 0xFFFFFF;
-                float();
-            },
-
             //Fade between
             fade: async (currentScene, nextScene, params) => {
 
-                //Check duration
+                // Check duration
                 if (params == undefined) params = {};
                 if (params.duration == undefined) params.duration = 500;
 
-                //Fade out current scene
+                // Fade out current scene
                 await Animate.to(currentScene, { alpha: 0, duration: params.duration / 2 });
-                //Remove it from stage
+                // Remove it from stage
                 app.stage.removeChild(currentScene);
-                //Set next scene to zero alpha
+                // Set next scene to zero alpha
                 nextScene.alpha = 0;
-                //Add it to the stage
+                // Add it to the stage
                 app.stage.addChild(nextScene);
-                //Fade it in
+                // Fade it in
                 await Animate.to(nextScene, { alpha: 1, duration: params.duration / 2 });
-                //Reset the off-stage scene's alpha back
+                // Reset the off-stage scene's alpha back
                 currentScene.alpha = 1;
             },
+
+            // Pull focus between
+            blink: async (currentScene, nextScene, params) => {
+
+                // Check duration
+                if (params == undefined) params = {};
+                if (params.duration == undefined) params.duration = 500;
+
+                // Unfocus current scene
+                await Animate.to(currentScene, { alpha: 0, duration: params.duration / 2 });
+                // Remove it from stage
+                app.stage.removeChild(currentScene);
+                // Apply Blur Filter to unfocus
+                app.stage.filters = [new PIXI.filters.BlurFilter()];
+                // Set next scene to zero alpha
+                nextScene.alpha = 0;
+                // Wait
+                await pause(120)
+                // Add it to the stage
+                app.stage.addChild(nextScene);
+                // Wait
+                await pause(60)
+                // Remove Blur Filter to refocus
+                app.stage.filters = false;
+                // Focus in to new scene
+                await Animate.to(nextScene, { alpha: 1, duration: params.duration / 2 });
+                // Reset the off-stage scene's alpha back
+                currentScene.alpha = 1;
+            },
+
+            // Slide in a particular direction
+            swipe: async (currentScene, nextScene, params) => {
+
+                // Set up destinations
+                let currentSceneEndX, currentSceneEndY;
+                let nextSceneStartX, nextSceneStartY;
+
+                // Check duration
+                if (params == undefined) params = {};
+                if (params.duration == undefined) params.duration = 500;
+
+                // Set default direction
+                if (params.direction == undefined) params.direction = "left";
+
+                // Figure out initial and end positions
+                if (params.direction == "left") {
+                    currentSceneEndX = -app.view.width;
+                    currentSceneEndY = 0;
+                    nextSceneStartX = app.view.width;
+                    nextSceneStartY = 0;
+                }
+                else if (params.direction == "right") {
+                    currentSceneEndX = app.view.width;
+                    currentSceneEndY = 0;
+                    nextSceneStartX = -app.view.width;
+                    nextSceneStartY = 0;
+                }
+                else if (params.direction == "up") {
+                    currentSceneEndX = 0;
+                    currentSceneEndY = -app.view.height;
+                    nextSceneStartX = 0;
+                    nextSceneStartY = app.view.height;
+                }
+                else if (params.direction == "down") {
+                    currentSceneEndX = 0;
+                    currentSceneEndY = app.view.height;
+                    nextSceneStartX = 0;
+                    nextSceneStartY = -app.view.height;
+                }
+
+                // Set up next scene, position, and adding to stage
+                nextScene.x = nextSceneStartX;
+                nextScene.y = nextSceneStartY;
+                app.stage.addChild(nextScene);
+
+                // Slide out current scene as it moves off
+                Animate.to(currentScene, {
+                    x: currentSceneEndX, y: currentSceneEndY,
+                    duration: params.duration,
+                    easing: Animate.easeInOut
+                });
+                // WHILE bringing in the next scene
+                await Animate.to(nextScene, {
+                    x: 0, y: 0,
+                    duration: params.duration,
+                    easing: Animate.easeInOut
+                });
+                // We only "await" on the last Animate, so that they both move at the same time
+
+                // Remove the old scene from stage
+                app.stage.removeChild(currentScene);
+
+                //And just to be nice, move the old scene back to neutral
+                currentScene.x = 0;
+                currentScene.y = 0;
+
+            },
+
         };
 
         //Use Director setup to manage scenes alongside button clicks
+        //Change onclick to pointerdown for touch displays
+        Director.addScene("title", title);
         Director.addScene("first", scene1);
         Director.addScene("second", scene2);
+        Director.addScene("third", scene3);
+        Director.addScene("fourth", scene4);
+        Director.addScene("fifth", scene5);
 
-        //First next button, goes to second scene
-        inButton.pointerdown = () => {
-            Director.showScene("second", { transition: Director.spaghetti });
+        //Brings user to first scene
+        beginButton.onclick = () => {
+            Director.showScene("first", { transition: Director.swipe });
+        }
+        
+        //Brings user to second scene
+        nextButton.onclick = () => {
+            Director.showScene("second", { transition: Director.fade });
         }
 
-        //Buttons for second slide, goes to first scene
-        outButton.pointerdown = () => {
+        //Returns user to first scene
+        backButton.onclick = () => {
             Director.showScene("first", { transition: Director.fade });
         }
+
+        //Brings user to third scene
+        nextButtonTwo.onclick = () => {
+            Director.showScene("third", { transition: Director.fade });
+        }
+
+        //Returns user to second scene
+        backButtonTwo.onclick = () => {
+            Director.showScene("second", { transition: Director.fade });
+        }
+
+        //Brings user to fourth scene
+        nextButtonThree.onclick = () => {
+            Director.showScene("fourth", { transition: Director.fade });
+        }
+
+        //Returns user to third scene
+        backButtonThree.onclick = () => {
+            Director.showScene("third", { transition: Director.fade });
+        }
+
+        //Bring user to fifth scene
+        nextButtonFour.onclick = () => {
+            Director.showScene("fifth", { transition: Director.fade });
+        }
+
+        //Return user to fourth scene
+        backButtonFour.onclick = () => {
+            Director.showScene("fourth", { transition: Director.fade });
+        }
+
 
         //Animations
 
