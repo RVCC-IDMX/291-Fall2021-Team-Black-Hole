@@ -222,7 +222,7 @@
         let scene1 = new PIXI.Container();
 
         //Create scene text
-        let textIntro = new PIXI.Text("INTERACT WITH ME", {fill:0xFFFFFF});
+        let textIntro = new PIXI.Text("INTERACT WITH ME", {fill:0xFFFFFF, fontFamily:'monospace'});
         textIntro.x = 200;
         textIntro.y = 50;
         scene1.addChild(textIntro);
@@ -253,15 +253,15 @@
         let scene2 = new PIXI.Container();
 
         //Create scene text
-        let scene2Text = new PIXI.Text('What is a Black Hole?', {fill:0xFFFFFF});
+        let scene2Text = new PIXI.Text('What is a Black Hole?', {fill:0xFFFFFF, fontFamily:'monospace'});
         scene2.addChild(scene2Text);
 
-        let scene2Content = new PIXI.Text('A black hole is recognized as an "astronomical object" with a gravitational pull so strong nothing can escape it, not even light ', {fill:0xFFFFFF, fontSize:20, align:'center', wordWrap:true, wordWrapWidth:500});
+        let scene2Content = new PIXI.Text('A black hole is recognized as an "astronomical object" with a gravitational pull so strong nothing can escape it, not even light ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:20, align:'center', wordWrap:true, wordWrapWidth:500});
         scene2Content.x = 75;
         scene2Content.y = 50;
         scene2.addChild(scene2Content);
         
-        let scene2ContentTwo = new PIXI.Text('The most common way a black hole forms is stellar death, a star will explode into a supernova at the end of its life, the release of force allowing the intense gravity to collapse. Black holes can grow and evaporate too!', {fill:0xFFFFFF, fontSize: 20, align:'center', wordWrap:true, wordWrapWidth:500,});
+        let scene2ContentTwo = new PIXI.Text('The most common way a black hole forms is stellar death, a star will explode into a supernova at the end of its life, the release of force allowing the intense gravity to collapse. Black holes can grow and evaporate too!', {fill:0xFFFFFF, fontFamily:'monospace', fontSize: 20, align:'center', wordWrap:true, wordWrapWidth:500,});
         scene2ContentTwo.x=75;
         scene2ContentTwo.y = 180;
         scene2.addChild(scene2ContentTwo);
@@ -280,22 +280,22 @@
         let scene3 = new PIXI.Container();
 
         //Create scene text
-        let scene3Text = new PIXI.Text('Characteristics of a Black Hole/Lensing', {fill:0xFFFFFF});
+        let scene3Text = new PIXI.Text('Characteristics of a Black Hole', {fill:0xFFFFFF, fontFamily:'monospace'});
         scene3.addChild(scene3Text);
 
-        let scene3Content = new PIXI.Text('- Radius is determined by the formula R = 3M, where M is mass of the black hole in units of solar mass. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
+        let scene3Content = new PIXI.Text('- Radius is determined by the formula R = 3M, where M is mass of the black hole in units of solar mass. ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
         scene3Content.x = 75;
         scene3Content.y = 50;
         scene3.addChild(scene3Content);
 
-        let scene3ContentTwo = new PIXI.Text('- Red shift: Gravity is strong enough to shift colors to the red part of the spectrum. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
+        let scene3ContentTwo = new PIXI.Text('- Red shift: Gravity is strong enough to shift colors to the red part of the spectrum. ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
         scene3ContentTwo.x = 75;
-        scene3ContentTwo.y = 125;
+        scene3ContentTwo.y = 150;
         scene3.addChild(scene3ContentTwo);
 
-        let scene3ContentThree = new PIXI.Text('- Lensing: The gravity that the light being bent over the hole multiple times. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
+        let scene3ContentThree = new PIXI.Text('- Lensing: The gravity that the light being bent over the hole multiple times. ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
         scene3ContentThree.x = 75;
-        scene3ContentThree.y = 200;
+        scene3ContentThree.y = 250;
         scene3.addChild(scene3ContentThree);
 
         //Create back button
@@ -312,25 +312,25 @@
         let scene4 = new PIXI.Container();
 
         //Create scene text
-        let scene4Text = new PIXI.Text('Types of Black Holes', {fill:0xFFFFFF});
+        let scene4Text = new PIXI.Text('Types of Black Holes', {fill:0xFFFFFF, fontFamily:'monospace'});
         scene4.addChild(scene4Text);
 
-        let scene4Content = new PIXI.Text('- Supermassive Black Holes: mass millions or billions the time of the Sun. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
+        let scene4Content = new PIXI.Text('- Supermassive Black Holes: mass millions or billions the time of the Sun. ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
         scene4Content.x = 75;
         scene4Content.y = 50;
         scene4.addChild(scene4Content);
 
-        let scene4ContentTwo = new PIXI.Text('- Stellar: mass 5 to 10 times the Sun, called collapsars, observed as radial energy bursts or hypernova. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
+        let scene4ContentTwo = new PIXI.Text('- Stellar: mass 5 to 10 times the Sun, called collapsars, observed as radial energy bursts or hypernova. ', {fill:0xFFFFFF, fontFamily:'monospace',fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
         scene4ContentTwo.x = 75;
         scene4ContentTwo.y = 125;
         scene4.addChild(scene4ContentTwo);
 
-        let scene4ContentThree = new PIXI.Text('- Intermediate: mass 100 to 500 times of the Sun. ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
+        let scene4ContentThree = new PIXI.Text('- Intermediate: mass 100 to 500 times of the Sun. ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
         scene4ContentThree.x = 75;
         scene4ContentThree.y = 200;
         scene4.addChild(scene4ContentThree);
 
-        let scene4ContentFour = new PIXI.Text('- Miniature: called quantum mechanical black holes, theoretical and smaller than stellar holes.  ', {fill:0xFFFFFF, fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
+        let scene4ContentFour = new PIXI.Text('- Miniature: called quantum mechanical black holes, theoretical and smaller than stellar holes.  ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:20, align:'left', wordWrap:true, wordWrapWidth:500});
         scene4ContentFour.x = 75;
         scene4ContentFour.y = 250;
         scene4.addChild(scene4ContentFour);
@@ -349,30 +349,30 @@
         let scene5 = new PIXI.Container();
 
         //Create scene text
-        let scene5Text = new PIXI.Text('Anatomy and Physics of a Black Hole', {fill:0xFFFFFF});
+        let scene5Text = new PIXI.Text('Anatomy and Physics of a Black Hole', {fill:0xFFFFFF, fontFamily:'monospace'});
         scene5.addChild(scene5Text);
 
-        let scene5Content = new PIXI.Text('- Accretion Disk: the disklike cloud of energy, gas, plasma, dust particles that surround the body of a black hole. ', {fill:0xFFFFFF, fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
+        let scene5Content = new PIXI.Text('- Accretion Disk: the disklike cloud of energy, gas, plasma, dust particles that surround the body of a black hole. ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
         scene5Content.x = 75;
         scene5Content.y = 50;
         scene5.addChild(scene5Content);
 
-        let scene5ContentTwo = new PIXI.Text('- Event Horizon: the theoretical bounds of a black hole in which no light can escape. ', {fill:0xFFFFFF, fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
+        let scene5ContentTwo = new PIXI.Text('- Event Horizon: the theoretical bounds of a black hole in which no light can escape. ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
         scene5ContentTwo.x = 75;
         scene5ContentTwo.y = 100;
         scene5.addChild(scene5ContentTwo);
 
-        let scene5ContentThree = new PIXI.Text('- Singularity: the center of a black hole, the infinitely compressed point of no return. ', {fill:0xFFFFFF, fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
+        let scene5ContentThree = new PIXI.Text('- Singularity: the center of a black hole, the infinitely compressed point of no return. ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
         scene5ContentThree.x = 75;
         scene5ContentThree.y = 150;
         scene5.addChild(scene5ContentThree);
 
-        let scene5ContentFour = new PIXI.Text('- Spaghettifiction: the vertical stretching and horizontal compression of objects into thin streams of particles. ', {fill:0xFFFFFF, fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
+        let scene5ContentFour = new PIXI.Text('- Spaghettifiction: the vertical stretching and horizontal compression of objects into thin streams of particles. ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500});
         scene5ContentFour.x = 75;
         scene5ContentFour.y = 200;
         scene5.addChild(scene5ContentFour);
 
-        let scene5ContentFive = new PIXI.Text('- Space/time: thought of like a fabric, the relation between space and time is warped by gravity, making time go by slower the larger the mass and warp of spacetime and faster the smaller the mass and warp of spacetime, also called time dilation; black holes are so dense, that energy cannot escape this warp. ', {fill:0xFFFFFF, fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500})
+        let scene5ContentFive = new PIXI.Text('- Dilation: The relation between space and time is warped by gravity, making time go by slower the larger the mass and warp of spacetime, and faster the smaller the mass and warp of spacetime. ', {fill:0xFFFFFF, fontFamily:'monospace', fontSize:16, align:'left', wordWrap:true, wordWrapWidth:500})
         scene5ContentFive.x = 75;
         scene5ContentFive.y = 250;
         scene5.addChild(scene5ContentFive);
