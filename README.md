@@ -55,3 +55,13 @@ Example: bulge.uniforms.strength = [1 - 4, etc.]
 
 ## Links
 [Prototype](https://blackhole-proto.netlify.app)
+
+[Nat Geo](https://www.nationalgeographic.com/science/article/black-holes)
+
+[Photographing a Black Hole](https://www.nasa.gov/image-feature/photographing-a-black-hole)
+
+[What's a Black Hole](https://www.nasa.gov/vision/universe/starsgalaxies/black_hole_description.html)
+
+[Lensing](https://www.black-holes.org/the-science-numerical-relativity/numerical-relativity/gravitational-lensing)
+
+[Dilation](https://www.wtamu.edu/~cbaird/sq/2013/06/24/does-time-go-faster-at-the-top-of-a-building-compared-to-the-bottom/)
