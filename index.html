@@ -626,6 +626,40 @@
         }
         float();
 
+        //Basic spaghetti animation
+
+        //inButton
+        inButton.interactive = true;
+        inButton.on('pointerdown', floatIn);
+        
+        async function floatIn() {
+             await Animate.to(astronaut, {
+                x: 275, y: 75,
+                duration: 4000,
+                alpha: 0,
+                tint: '0xbd4520',
+                easing: Animate.easeInOut  
+            });
+        }
+
+        //outButton
+        outButton.interactive =true;
+        outButton.on('pointerdown', floatOut);
+
+        async function floatOut() {
+            await Animate.to(astronaut, {
+                x: 0, y:75,
+                duration: 3000,
+                alpha: 1,
+                tint: '0xFFFFFF',
+                easing: Animate.easeInOut
+            });
+            float();
+        }
+        
+
+
+
     </script>
     <p style="font-family: 'Courier New', Courier, monospace;">Authors: Tim, Fender, Spencer</p>
 
