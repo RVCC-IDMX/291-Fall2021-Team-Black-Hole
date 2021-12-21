@@ -21,33 +21,64 @@ document.body.appendChild(app.view);
 let background = new PIXI.Container();
 let astronautOuter = new PIXI.Container();
 let ui = new PIXI.Container();
+let overlay = new PIXI.Container();
 
 // FUNCTIONS --------------------------------------------------------------- //
 
 // Sprite initializer
-let initSprite = (file, x, y, size, anchor, container) => {
+let initSprite = (file, x, y, size, opacity, anchor, container) => {
+    const size1 = typeof size == 'object' ? size[0] : size;
+    const size2 = typeof size == 'object' ? size[0] : size;
     let sprite = PIXI.Sprite.from(`img/${file}.png`);
     sprite.x = x;
     sprite.y = y;
-    sprite.scale.set(size);
+    sprite.scale.set(size1, size2);
+    sprite.alpha = opacity;
     sprite.anchor.set(anchor);
     app.stage.addChild(sprite);
     if (container) container.addChild(sprite);
     return sprite;
 };
 
-let clamp = (num, min, max) => Math.min(Math.max(parseInt(num), min), max);
+// Text initalizer
+let initText = (content, x, y, font, color, size, opacity, anchor, container) => {
+    let text = new PIXI.Text(content, {
+        fontFamily: font,
+        fill: color,
+        fontSize: size
+    });
+    text.x = x;
+    text.y = y;
+    text.alpha = opacity;
+    text.anchor.set(anchor);
+    app.stage.addChild(text);
+    if (container) container.addChild(text);
+    return text;
+};
+
+const clamp = (num, min, max) => Math.min(Math.max(parseInt(num), min), max);
+
+// INTERNAL VARS ----------------------------------------------------------- //
+
+let scene = 1; // 0: pre, 1: interactable, 2: infoslides
+let slide = 0; // 0: n/a, 1: whatis, 2: characteristics, 3: types, 4: anatomy
 
 // SPRITE SETUP ------------------------------------------------------------ //
 
 // Sprite pool
-let bg          = initSprite('background', scx, scy, 0.34, 0.5, background);
-let cluster     = initSprite('cluster', sw*0.7, sh*0.7, 2, 0.5, background);
-let astronaut   = initSprite('astronaut', sw*0.15, scy, 0.4, 0.5, astronautOuter);
-let sliderMain  = initSprite('slider', scx, sh*0.08, 0.6, 0.5, ui);
-let sliderDial  = initSprite('nub', scx, sh*0.079, 0.6, 0.5, ui);
-let buttonOut   = initSprite('out', sw*0.17, sh*0.87, 0.6, 0.5, ui);
-let buttonIn    = initSprite('in', sw-sw*0.17, sh*0.87, 0.6, 0.5, ui);
+let bg          = initSprite('background', scx, scy, 0.34, 1, 0.5, background);
+let cluster     = initSprite('cluster', sw*0.7, sh*0.7, 2, 1, 0.5, background);
+let astronaut   = initSprite('astronaut', sw*0.15, scy, 0.4, 1, 0.5, astronautOuter);
+let sliderMain  = initSprite('slider', scx, sh*0.08, 0.6, 1, 0.5, ui);
+let sliderDial  = initSprite('nub', scx, sh*0.079, 0.6, 1, 0.5, ui);
+let buttonOut   = initSprite('out', sw*0.17, sh*0.87, 0.6, 1, 0.5, ui);
+let buttonInfo  = initSprite('info', scx, sh*0.87, 0.5, 1, 0.5, ui);
+let buttonIn    = initSprite('in', sw-sw*0.17, sh*0.87, 0.6, 1, 0.5, ui);
+let dim         = initSprite('dim', 0, 0, [sw, sh], 0, 0, overlay)
+let buttonClose = initSprite('close', sw*0.935, sh*0.09, 0.3, 1, 0.5, overlay);
+let buttonBack  = initSprite('nav', sw*0.095, sh*1.17, -0.6, 0, 0.5, overlay);
+let buttonNext  = initSprite('nav', sw*0.905, sh*1.17, 0.6, 0, 0.5, overlay);
+let infoHeader  = initText('PROTOTYPE', scx, scy, 'monospace', '#CCC', 128, 0.3, 0.5, overlay);
 
 // "Black hole" filter
 let bulge = new BulgePinchFilter({
@@ -61,6 +92,7 @@ background.filters = [bulge];
 app.stage.addChild(background);
 app.stage.addChild(astronautOuter);
 app.stage.addChild(ui);
+app.stage.addChild(overlay);
 
 // BLACK HOLE SIZE ------------------------------------------------------------ //
 
@@ -95,7 +127,7 @@ sliderDial.on("pointermove", e => {
 });
 sliderDial.on("pointerup", e => sliderDial.dragging = false);
 
-// EXTRA UI ---------------------------------------------------------------- //
+// UI ---------------------------------------------------------------------- //
 
 // Out button
 buttonOut.interactive = true;
@@ -112,6 +144,14 @@ let inTexture = PIXI.Texture.from('img/in.png');
 let inTextureHover = PIXI.Texture.from('img/in2.png');
 buttonIn.on("pointerdown", e => buttonIn.texture = inTextureHover);
 buttonIn.on("pointerup", e => buttonIn.texture = inTexture);
+
+// Info button
+buttonInfo.interactive = true;
+buttonInfo.cursor = 'pointer';
+let infoTexture = PIXI.Texture.from('img/info.png');
+let infoTextureHover = PIXI.Texture.from('img/info2.png');
+buttonInfo.on("pointerdown", e => buttonInfo.texture = infoTextureHover);
+buttonInfo.on("pointerup", e => buttonInfo.texture = infoTexture);
 
 // ANIMATION SETUP --------------------------------------------------------- //
 
@@ -198,7 +238,7 @@ linRotate(bg, 500);
 floatCos(bg, 500, 'anchor.x', 0.5, -0.2/4);
 floatCos(bg, 500, 'y', scy, sh*0.3/4);
 
-// SCENES ------------------------------------------------------------------ //
+// MAIN SCENES ------------------------------------------------------------- //
 
 buttonIn.on("pointerdown", e => {
     animate(astronautOuter, 8, Ease.sines, scx*0.55, 'x');
@@ -217,3 +257,19 @@ buttonOut.on("pointerdown", e => {
     animate(astronaut, 1, Ease.circout, 0.4, 'scale.y');
     astronaut.tint = 0xFFFFFF;
 });
+
+buttonInfo.on("pointerdown", e => {
+    animate(dim, 1, Ease.sines, 0.6, 'alpha');
+    animate(astronautOuter, 1.5, Ease.sines, sw*-0.3, 'x');
+    animate(sliderMain, 1.5, Ease.sines, sh*-0.28, 'y');
+    animate(sliderDial, 1.5, Ease.sines, sh*-0.279, 'y');
+    animate(buttonOut, 1.5, Ease.sines, sh*1.15, 'y');
+    animate(buttonIn, 1.5, Ease.sines, sh*1.15, 'y');
+    animate(buttonInfo, 1.5, Ease.sines, sh*1.15, 'y');
+    animate(buttonNext, 1.5, Ease.sines, sh*0.87, 'y');
+    animate(buttonBack, 1.5, Ease.sines, sh*0.87, 'y');
+    animate(buttonNext, 0.1, Ease.sines, 1, 'alpha');
+    animate(buttonBack, 0.1, Ease.sines, 1, 'alpha');
+});
+
+// INFO SCENES ------------------------------------------------------------- //
