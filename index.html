@@ -554,7 +554,7 @@
         };
 
         //Use Director setup to manage scenes alongside button clicks
-        //Change pointerdown to pointerdown for touch displays
+        //Change onclick to pointerdown for touch displays
         Director.addScene("title", title);
         Director.addScene("first", scene1);
         Director.addScene("second", scene2);
@@ -563,47 +563,47 @@
         Director.addScene("fifth", scene5);
 
         //Brings user to first scene
-        beginButton.pointerdown = () => {
+        beginButton.onclick = () => {
             Director.showScene("first", { transition: Director.swipe });
         }
 
         //Brings user to second scene
-        nextButton.pointerdown = () => {
+        nextButton.onclick = () => {
             Director.showScene("second", { transition: Director.fade });
         }
 
         //Returns user to first scene
-        backButton.pointerdown = () => {
+        backButton.onclick = () => {
             Director.showScene("first", { transition: Director.fade });
         }
 
         //Brings user to third scene
-        nextButtonTwo.pointerdown = () => {
+        nextButtonTwo.onclick = () => {
             Director.showScene("third", { transition: Director.fade });
         }
 
         //Returns user to second scene
-        backButtonTwo.pointerdown = () => {
+        backButtonTwo.onclick = () => {
             Director.showScene("second", { transition: Director.fade });
         }
 
         //Brings user to fourth scene
-        nextButtonThree.pointerdown = () => {
+        nextButtonThree.onclick = () => {
             Director.showScene("fourth", { transition: Director.fade });
         }
 
         //Returns user to third scene
-        backButtonThree.pointerdown = () => {
+        backButtonThree.onclick = () => {
             Director.showScene("third", { transition: Director.fade });
         }
 
         //Bring user to fifth scene
-        nextButtonFour.pointerdown = () => {
+        nextButtonFour.onclick = () => {
             Director.showScene("fifth", { transition: Director.fade });
         }
 
         //Return user to fourth scene
-        backButtonFour.pointerdown = () => {
+        backButtonFour.onclick = () => {
             Director.showScene("fourth", { transition: Director.fade });
         }
 
