@@ -36,15 +36,16 @@
         //     audio.play();
         // });
 
-        //Refresh based on user inactivity
+        //Refresh listeners based on user inactivity
+        //allows return to title scene
 
         // Refresh Rate is how often you want to refresh the page 
-        // bassed off the user inactivity. 
+        // based off user inactivity. 
         var refresh_rate = 10; //<-- In seconds, change to your needs
         var last_user_action = 0;
         var has_focus = false;
         var lost_focus_count = 0;
-        // If the user loses focus on the browser to many times 
+        // If the user loses focus on the browser too many times 
         // we want to refresh anyway even if they are typing. 
         // This is so we don't get the browser locked into 
         // a state where the refresh never happens.    
@@ -81,6 +82,8 @@
             }
 
         }
+
+        //Window listeners
         window.addEventListener("focus", windowHasFocus, false);
         window.addEventListener("blur", windowLostFocus, false);
         window.addEventListener("click", reset, false);
@@ -90,6 +93,7 @@
         window.addEventListener("scroll", reset, false);
         document.addEventListener("touchMove", reset, false);
         document.addEventListener("touchEnd", reset, false);
+
         //The Animate Background
 
 
