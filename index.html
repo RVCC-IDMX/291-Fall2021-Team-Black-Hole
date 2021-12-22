@@ -36,63 +36,33 @@
         //     audio.play();
         // });
 
-        //Refresh listeners based on user inactivity
-        //allows return to title scene
+        //Refresh logic for inactivity 
+        var refreshTimerID;
 
-        // Refresh Rate is how often you want to refresh the page 
-        // based off user inactivity. 
-        var refresh_rate = 10; //<-- In seconds, change to your needs
-        var last_user_action = 0;
-        var has_focus = false;
-        var lost_focus_count = 0;
-        // If the user loses focus on the browser too many times 
-        // we want to refresh anyway even if they are typing. 
-        // This is so we don't get the browser locked into 
-        // a state where the refresh never happens.    
-        var focus_margin = 10;
+        function refreshTimer() {
 
-        // Reset the Timer on users last action
-        function reset() {
-            last_user_action = 0;
-            console.log("Reset");
-        }
+            //Begin waiting
+            console.log("Start wait...");
 
-        function windowHasFocus() {
-            has_focus = true;
-        }
+            clearTimeout(refreshTimerID);
 
-        function windowLostFocus() {
-            has_focus = false;
-            lost_focus_count++;
-            console.log(lost_focus_count + " <~ Lost Focus");
-        }
+            refreshTimerID = setTimeout(() => {
 
-        // Count Down that executes ever second
-        setInterval(function () {
-            last_user_action++;
-            refreshCheck();
-        }, 1000);
+                //Refresh page
+                console.log("Regreshing");
+                location.reload();
+            }, 10000 //refresh rate after time of inactivity in milliseconds (1000 * num_seconds) or (1000 * 60 * num_minutes)
+            );
+        };
 
-        // The code that checks if the window needs to reload
-        function refreshCheck() {
-            var focus = window.onfocus;
-            if ((last_user_action >= refresh_rate && !has_focus && document.readyState == "complete") || lost_focus_count > focus_margin) {
-                window.location.reload(); // If this is called no reset is needed
-                reset(); // We want to reset just to make sure the location reload is not called.
-            }
-
-        }
-
-        //Window listeners
-        window.addEventListener("focus", windowHasFocus, false);
-        window.addEventListener("blur", windowLostFocus, false);
-        window.addEventListener("click", reset, false);
-        window.addEventListener("onclick", reset, false);
-        window.addEventListener("mousemove", reset, false);
-        window.addEventListener("keypress", reset, false);
-        window.addEventListener("scroll", reset, false);
-        document.addEventListener("touchMove", reset, false);
-        document.addEventListener("touchEnd", reset, false);
+        //Activity Event Listeners
+        document.addEventListener("click", refreshTimer);
+        document.addEventListener("onclick", refreshTimer);
+        document.addEventListener("mousemove", refreshTimer);
+        document.addEventListener("mousedown", refreshTimer);
+        document.addEventListener("keypress", refreshTimer);
+        document.addEventListener("scroll", refreshTimer);
+        document.addEventListener("touchEnd", refreshTimer);
 
         //The Animate Background
 

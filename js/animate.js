@@ -58,7 +58,7 @@ Animate.to = function(obj,end) {
                 if (end.rotation != undefined) obj.rotation = end.rotation;
                 if (end.tint != undefined) obj.tint = end.tint;
                 if (end.alpha != undefined) obj.alpha = end.alpha;
-                console.log("Done!");
+                //console.log("Done!");
                 
                 resolve();
                 return;
