@@ -77,3 +77,5 @@ The cluster idly rotates in a pattern.
 [Lensing](https://www.black-holes.org/the-science-numerical-relativity/numerical-relativity/gravitational-lensing)
 
 [Dilation](https://www.wtamu.edu/~cbaird/sq/2013/06/24/does-time-go-faster-at-the-top-of-a-building-compared-to-the-bottom/)
+
+[Refresh Logic](https://stackoverflow.com/a/15279599)
