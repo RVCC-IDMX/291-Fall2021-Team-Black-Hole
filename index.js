@@ -1,5 +1,9 @@
 // ENVIRONMENT SETUP ------------------------------------------------------- //
 
+// Touch mode
+const MODE_DOWN = "pointerdown";
+const MODE_UP = "pointerup";
+
 // Define screen res, shortcuts
 const sw = 640, sh = 480;
 const scx = sw/2, scy = sh/2;
@@ -23,6 +27,12 @@ let astronautOuter = new PIXI.Container();
 let ui = new PIXI.Container();
 let overlay = new PIXI.Container();
 
+// BACKEND ----------------------------------------------------------------- //
+
+let scene = 0; // 0: pre, 1: interactable, 2: infoslides
+let slide = 0; // 0: n/a, 1: whatis, 2: characteristics, 3: types, 4: anatomy
+let timeDelta = 0;
+
 // FUNCTIONS --------------------------------------------------------------- //
 
 // Sprite initializer
@@ -41,11 +51,14 @@ let initSprite = (file, x, y, size, opacity, anchor, container) => {
 };
 
 // Text initalizer
-let initText = (content, x, y, font, color, size, opacity, anchor, container) => {
+let initText = (content, x, y, font, color, size, weight, opacity, anchor, container) => {
     let text = new PIXI.Text(content, {
         fontFamily: font,
         fill: color,
-        fontSize: size
+        fontSize: size,
+        fontWeight: weight,
+        wordWrap: true,
+        wordWrapWidth: 520
     });
     text.x = x;
     text.y = y;
@@ -56,18 +69,97 @@ let initText = (content, x, y, font, color, size, opacity, anchor, container) =>
     return text;
 };
 
+// Button initializer
+let initButton = (sprite, file) => {
+    sprite.interactive = true;
+    sprite.cursor = 'pointer';
+    let outTexture = PIXI.Texture.from(`img/${file}.png`);
+    let outTextureHover = PIXI.Texture.from(`img/${file}2.png`);
+    sprite.on(MODE_DOWN, e => {
+        sprite.texture = outTextureHover;
+        timeDelta = 0;
+    });
+    sprite.on(MODE_UP, e => sprite.texture = outTexture);
+};
+
 const clamp = (num, min, max) => Math.min(Math.max(parseInt(num), min), max);
+const setText = (obj, text) => obj.text = text;
 
-// INTERNAL VARS ----------------------------------------------------------- //
+// TEXT -------------------------------------------------------------------- //
 
-let scene = 1; // 0: pre, 1: interactable, 2: infoslides
-let slide = 0; // 0: n/a, 1: whatis, 2: characteristics, 3: types, 4: anatomy
+headerText = [
+    ``,
+    `What is a Black Hole?`,
+    `Characteristics of a Black Hole`,
+    `Types of Black Holes`,
+    `Anatomy and Physics of a Black Hole`,
+];
+
+descText = [
+    ``,
+    // 1
+    `A black hole is recognized as an "astronomical object" with `+
+    `a gravitational pull so strong nothing can escape it, not even light.\n\n`+
+    `The most common way a black hole forms is stellar death, a star `+
+    `will explode into a supernova at the end of its life, the release of `+
+    `force allowing the intense gravity to collapse. Black holes can grow `+
+    `and evaporate too!`,
+    // 2
+    `- Radius is determined by the formula R = 3M, where M is mass of the `+
+    `black hole in units of solar mass.\n\n- Red shift: Gravity is strong `+
+    `enough to shift colors to the red part of the spectrum.\n\n- Lensing: `+
+    `The gravity that the light being bent over the hole multiple times.`,
+    // 3
+    `- Supermassive Black Holes: mass millions or billions the time of `+
+    `the Sun.\n\n- Stellar: mass 5 to 10 times the Sun, called collapsars, `+
+    `observed as radial energy bursts or hypernova.\n\n- Intermediate: mass `+
+    `100 to 500 times of the Sun.\n\n- Miniature: called quantum mechanical `+
+    `black holes, theoretical and smaller than stellar holes.`,
+    // 4
+    `- Accretion Disk: the disklike cloud of energy, gas, plasma, dust `+
+    `particles that surround the body of a black hole.\n\n- Event Horizon: `+
+    `the theoretical bounds of a black hole in which no light can escape.\n\n`+
+    `- Singularity: the center of a black hole, the infinitely compressed`+
+    `point of no return.\n\n- Spaghettifiction: the vertical stretching and`+
+    `horizontal compression of objects into thin streams of particles.\n\n`+
+    `- Dilation: The relation between space and time is warped by gravity, `+
+    `making time go by slower the larger the mass and warp of spacetime, `+
+    `and faster the smaller the mass and warp of spacetime.`
+];
+
+// AUDIO ------------------------------------------------------------------- //
+
+let sfxDoor = new Audio("sfx/door.ogg");
+let sfxButton = new Audio("sfx/button.ogg");
+let sfxClick = new Audio("sfx/click.ogg");
 
 // SPRITE SETUP ------------------------------------------------------------ //
 
-// Sprite pool
+// Sprite pool pt1
 let bg          = initSprite('background', scx, scy, 0.34, 1, 0.5, background);
 let cluster     = initSprite('cluster', sw*0.7, sh*0.7, 2, 1, 0.5, background);
+
+// Animated stars
+for (let i = 0; i < 1000; i++) {
+    let s = initSprite('star', Math.random()*1.5*sw, Math.random()*1.5*sh, Math.random()/50, 0.7, 0.5, background);
+    let k = initSprite('star', Math.random()*1.5*sw, Math.random()*1.5*sh, Math.random()/50, 0.7, 0.5, background);
+    let j = initSprite('star', Math.random()*1.5*sw, Math.random()*1.5*sh, Math.random()/50, 0.7, 0.5, background);
+    requestAnimationFrame(animate);
+    function animate() {
+        requestAnimationFrame(animate);
+        let a = Date.now() / 1000;
+        let b = Date.now() / 500;
+        let c = Date.now() / 300;
+        let freq = i / 1000;
+        let amp = i / 1000;
+        s.alpha = freq * Math.sin(a + amp) * 0.3;
+        k.alpha = freq * Math.cos(b + amp) * 0.3;
+        j.alpha = freq * Math.sin(c + amp) * 0.3;
+    }
+}
+
+// Sprite pool pt2
+let meteor      = initSprite('meteor', sw, sh*0.75, 0.1, 0, -3.7, background);
 let astronaut   = initSprite('astronaut', sw*0.15, scy, 0.4, 1, 0.5, astronautOuter);
 let sliderMain  = initSprite('slider', scx, sh*0.08, 0.6, 1, 0.5, ui);
 let sliderDial  = initSprite('nub', scx, sh*0.079, 0.6, 1, 0.5, ui);
@@ -76,13 +168,18 @@ let buttonInfo  = initSprite('info', scx, sh*0.87, 0.5, 1, 0.5, ui);
 let buttonIn    = initSprite('in', sw-sw*0.17, sh*0.87, 0.6, 1, 0.5, ui);
 let dim         = initSprite('dim', 0, 0, [sw, sh], 0, 0, overlay)
 let buttonClose = initSprite('close', sw*0.935, sh*0.09, 0.3, 1, 0.5, overlay);
-let buttonBack  = initSprite('nav', sw*0.095, sh*1.17, -0.6, 0, 0.5, overlay);
-let buttonNext  = initSprite('nav', sw*0.905, sh*1.17, 0.6, 0, 0.5, overlay);
-let infoHeader  = initText('PROTOTYPE', scx, scy, 'monospace', '#CCC', 128, 0.3, 0.5, overlay);
+let infoEngage  = initText("Interact with me!", scx, sh*0.19, 'M PLUS 1', '#d08dff', 28, 300, 0, 0.5, overlay);
+let infoHeader  = initText(headerText[0], scx, sh*0.15, 'Open Sans Condensed', '#eee', 36, 800, 0, 0.5, overlay);
+let infoDesc    = initText(descText[0], scx, sh*0.51, 'M PLUS 1','#eee', 18, 300, 0, 0.5, overlay);
+let buttonBack  = initSprite('nav', sw*0.08, sh*1.19, -0.45, 1, 0.5, overlay);
+let buttonNext  = initSprite('nav', sw*0.92, sh*1.19, 0.45, 1, 0.5, overlay);
+let introWindow = initSprite('window', sw*0.502, sh*0.52, 0.57, 1, 0.5, overlay);
+let buttonIntro = initSprite('nav', scx, sh*0.8, 0.6, 1, 0.5, overlay);
+buttonIntro.rotation = -pi/2;
 
 // "Black hole" filter
 let bulge = new BulgePinchFilter({
-    center: [0.75, 0.5],
+    center: [0.5, 0.5],
     radius: 100,
     strength: 100,
 });
@@ -105,14 +202,14 @@ sliderDial.cursor = 'pointer';
 let nubTexture = PIXI.Texture.from('img/nub.png');
 let nubTextureHover = PIXI.Texture.from('img/nub2.png');
 
-// Set hover properties
-sliderDial.on("pointerdown", e => sliderDial.texture = nubTextureHover);
-sliderDial.on("pointerup", e => sliderDial.texture = nubTexture);
+// Set click properties 1
+sliderDial.on(MODE_DOWN, e => sliderDial.texture = nubTextureHover);
+sliderDial.on(MODE_UP, e => sliderDial.texture = nubTexture);
 
-// Set click properties
-sliderDial.on("pointerdown", e => sliderDial.dragging = true);
+// Set click properties 2
+sliderDial.on(MODE_DOWN, e => sliderDial.dragging = true);
 sliderDial.on("pointermove", e => {
-    if (sliderDial.dragging) {
+    if (sliderDial.dragging && scene != 0) {
         // slider values
         let xpos = e.data.global.x;
         let xval = clamp(xpos, 193.5, sliderMain.width*0.825+193.5);
@@ -123,35 +220,11 @@ sliderDial.on("pointermove", e => {
         let size = 100 * (xcalc + 0.5)
         bulge.uniforms.strength = strength;
         bulge.uniforms.radius = size;
+        // timer
+        timeDelta = 0;
     }
 });
-sliderDial.on("pointerup", e => sliderDial.dragging = false);
-
-// UI ---------------------------------------------------------------------- //
-
-// Out button
-buttonOut.interactive = true;
-buttonOut.cursor = 'pointer';
-let outTexture = PIXI.Texture.from('img/out.png');
-let outTextureHover = PIXI.Texture.from('img/out2.png');
-buttonOut.on("pointerdown", e => buttonOut.texture = outTextureHover);
-buttonOut.on("pointerup", e => buttonOut.texture = outTexture);
-
-// In button
-buttonIn.interactive = true;
-buttonIn.cursor = 'pointer';
-let inTexture = PIXI.Texture.from('img/in.png');
-let inTextureHover = PIXI.Texture.from('img/in2.png');
-buttonIn.on("pointerdown", e => buttonIn.texture = inTextureHover);
-buttonIn.on("pointerup", e => buttonIn.texture = inTexture);
-
-// Info button
-buttonInfo.interactive = true;
-buttonInfo.cursor = 'pointer';
-let infoTexture = PIXI.Texture.from('img/info.png');
-let infoTextureHover = PIXI.Texture.from('img/info2.png');
-buttonInfo.on("pointerdown", e => buttonInfo.texture = infoTextureHover);
-buttonInfo.on("pointerup", e => buttonInfo.texture = infoTexture);
+sliderDial.on(MODE_UP, e => sliderDial.dragging = false);
 
 // ANIMATION SETUP --------------------------------------------------------- //
 
@@ -165,8 +238,7 @@ let Ease = {
     quadout:    x => 1 * (1 - x) * (1 - x),
     quads:      x => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2,
     circout:    x => Math.sqrt(1 - Math.pow(x - 1, 2)),
-    circin:     x => 1 - Math.sqrt(1 - Math.pow(x, 2)),
-    circs:      x => x < 0.5 ? Ease.circin(x) / 2 : Ease.circout(x) / 2
+    circin:     x => 1 - Math.sqrt(1 - Math.pow(x, 2))
 };
 
 // Animate an object
@@ -207,6 +279,29 @@ let animate = (obj, duration, ease, amp, attrib) => {
     });
 };
 
+// Animate the black hole's position 
+let animateHole = (duration, ease, amp) => {
+    return new Promise( (resolve, reject) => {
+        let start = bulge.center[0];
+        let t0 = Date.now()/1000;
+        let loop = () => {
+            let t = Date.now()/1000 - t0;
+            let delta = t / duration;
+            let alpha = ease(delta);
+            if (delta >= 1) {
+                bulge.center[0] = amp;
+                resolve();
+                return;
+            }
+            let lerp = (a, b, n) => (1 - n) * a + n * b;
+            bulge.center[0] = lerp(start, amp, alpha);
+            bulge.center[0]['animationID'] = requestAnimationFrame(loop);
+        };
+        cancelAnimationFrame(bulge.center[0]['animationID']);
+        loop();
+    });
+};
+
 // ANIMATION EXECUTION ----------------------------------------------------- //
 
 let floatSin = async (sprite, duration, attrib, start, amp) => {
@@ -237,39 +332,165 @@ floatCos(cluster, 250, 'y', sh*0.7, sh*0.3);
 linRotate(bg, 500);
 floatCos(bg, 500, 'anchor.x', 0.5, -0.2/4);
 floatCos(bg, 500, 'y', scy, sh*0.3/4);
+linRotate(meteor, 18);
 
-// MAIN SCENES ------------------------------------------------------------- //
+// UI ---------------------------------------------------------------------- //
 
-buttonIn.on("pointerdown", e => {
-    animate(astronautOuter, 8, Ease.sines, scx*0.55, 'x');
-    animate(astronautOuter, 8, Ease.sines, 180, 'y');
-    animate(astronautOuter, 8, Ease.sines, -pi/3, 'rotation');
-    animate(astronaut, 7.5, Ease.sines, 0, 'scale.x');
-    animate(astronaut, 7.5, Ease.circin, 0.1, 'scale.y');
-    animate(astronaut, 8, Ease.sinein, 0xF58142, 'tint');
-});
+initButton(buttonOut, 'out');
+initButton(buttonIn, 'in');
+initButton(buttonInfo, 'info');
+initButton(buttonBack, 'nav');
+initButton(buttonNext, 'nav');
+initButton(buttonClose, 'close');
+initButton(buttonIntro, 'nav');
 
-buttonOut.on("pointerdown", e => {
+// Reset the astronaut
+const resetAstronaut = () => {
     animate(astronautOuter, 2, Ease.circout, 0, 'x');
     animate(astronautOuter, 2, Ease.circout, 0, 'y');
     animate(astronautOuter, 2, Ease.circout, 0, 'rotation');
     animate(astronaut, 1, Ease.circout, 0.4, 'scale.x');
     animate(astronaut, 1, Ease.circout, 0.4, 'scale.y');
     astronaut.tint = 0xFFFFFF;
+};
+
+// Reset from scene 1 to scene 0
+const reset1_0 = () => {
+    animate(introWindow, 1.5, Ease.circout, 0.6, 'scale.x');
+    animate(introWindow, 1.5, Ease.circout, 0.6, 'scale.y');
+    animate(buttonIntro, 1, Ease.circout, sh*0.8, 'y');
+    animate(buttonIntro, 1, Ease.circout, 1, 'alpha');
+    animate(sliderMain, 1.5, Ease.circout, scx, 'x');
+    animate(sliderDial, 1.5, Ease.circout, scx, 'x');
+    animate(bulge, 1.5, Ease.circout, 100, 'radius');
+    animate(bulge, 1.5, Ease.circout, 100, 'strength');
+    animateHole(1.5, Ease.circout, 0.5);
+    resetAstronaut();
+    animate(infoEngage, 0.4, Ease.sines, 0, 'alpha');
+    animate(meteor, 0.1, Ease.sines, 0, 'alpha');
+};
+
+// Reset from scene 2 to scene 1
+const reset2_1 = () => {
+    animate(dim, 1, Ease.sines, 0, 'alpha');
+    animate(sliderMain, 1.5, Ease.sines, sh*0.08, 'y');
+    animate(sliderDial, 1.5, Ease.sines, sh*0.079, 'y');
+    animate(buttonOut, 1.25, Ease.sines, sh*0.87, 'y');
+    animate(buttonIn, 1.25, Ease.sines, sh*0.87, 'y');
+    animate(buttonInfo, 1.4, Ease.quads, sh*0.87, 'y');
+    animate(buttonBack, 1.5, Ease.sines, sh*1.19, 'y');
+    animate(buttonNext, 1.5, Ease.sines, sh*1.19, 'y');
+    animate(infoHeader, 1, Ease.quads, 0, 'alpha');
+    animate(infoDesc, 1, Ease.quads, 0, 'alpha');
+    animate(infoEngage, 2, Ease.sines, 0.8, 'alpha');
+};
+
+buttonIntro.on(MODE_DOWN, e => {
+    scene = 1;
+    animate(introWindow, 1, Ease.circin, 1.5, 'scale.x');
+    animate(introWindow, 1, Ease.circin, 1.5, 'scale.y');
+    animate(buttonIntro, 1, Ease.sines, sh*1.2, 'y');
+    animate(buttonIntro, 1, Ease.sines, 0, 'alpha');
+    animate(infoEngage, 1, Ease.sines, 0.8, 'alpha');
+    animateHole(1.5, Ease.sines, 0.75);
+    animate(meteor, 0.1, Ease.sines, 1, 'alpha');
+    sfxDoor.play();
 });
 
-buttonInfo.on("pointerdown", e => {
-    animate(dim, 1, Ease.sines, 0.6, 'alpha');
-    animate(astronautOuter, 1.5, Ease.sines, sw*-0.3, 'x');
-    animate(sliderMain, 1.5, Ease.sines, sh*-0.28, 'y');
-    animate(sliderDial, 1.5, Ease.sines, sh*-0.279, 'y');
-    animate(buttonOut, 1.5, Ease.sines, sh*1.15, 'y');
-    animate(buttonIn, 1.5, Ease.sines, sh*1.15, 'y');
-    animate(buttonInfo, 1.5, Ease.sines, sh*1.15, 'y');
-    animate(buttonNext, 1.5, Ease.sines, sh*0.87, 'y');
-    animate(buttonBack, 1.5, Ease.sines, sh*0.87, 'y');
-    animate(buttonNext, 0.1, Ease.sines, 1, 'alpha');
-    animate(buttonBack, 0.1, Ease.sines, 1, 'alpha');
+buttonIn.on(MODE_DOWN, e => {
+    if (scene != 0) {
+        animate(astronautOuter, 8, Ease.sines, scx*0.55, 'x');
+        animate(astronautOuter, 8, Ease.sines, 180, 'y');
+        animate(astronautOuter, 8, Ease.sines, -pi/3, 'rotation');
+        animate(astronaut, 7.5, Ease.sines, 0, 'scale.x');
+        animate(astronaut, 7.5, Ease.circin, 0.1, 'scale.y');
+        animate(astronaut, 8, Ease.sinein, 0xF58142, 'tint');
+        sfxButton.play();
+    }
 });
 
-// INFO SCENES ------------------------------------------------------------- //
+buttonOut.on(MODE_DOWN, e => {
+    if (scene != 0) {
+        resetAstronaut();
+        sfxClick.play();
+    }
+});
+
+buttonInfo.on(MODE_DOWN, e => {
+    if (scene != 0) {
+        scene = 2;
+        slide = 1;
+        animate(dim, 1, Ease.sines, 0.6, 'alpha');
+        animate(astronautOuter, 1.5, Ease.sines, sw*-0.3, 'x');
+        animate(sliderMain, 1.5, Ease.sines, sh*-0.28, 'y');
+        animate(sliderDial, 1.5, Ease.sines, sh*-0.279, 'y');
+        animate(buttonOut, 1.5, Ease.sines, sh*1.15, 'y');
+        animate(buttonIn, 1.5, Ease.sines, sh*1.15, 'y');
+        animate(buttonInfo, 2, Ease.quads, sh*1.15, 'y');
+        animate(buttonNext, 1.5, Ease.sines, sh*0.89, 'y');
+        setText(infoHeader, headerText[slide]);
+        setText(infoDesc, descText[slide]);
+        animate(infoEngage, 0.4, Ease.sines, 0, 'alpha');
+        animate(infoHeader, 2, Ease.quads, 1, 'alpha');
+        animate(infoDesc, 2, Ease.quads, 1, 'alpha');
+        sfxButton.play();
+    }
+});
+
+buttonClose.on(MODE_DOWN, e => {
+    if (scene != 0) {
+        if (scene == 1) {
+            scene = 0;
+            reset1_0();
+        } else if (scene == 2) {
+            scene = 1;
+            slide = 0;
+            reset2_1();
+            animate(astronautOuter, 1.5, Ease.sines, 0, 'x');
+        }
+        sfxClick.play();
+    }
+});
+
+buttonBack.on(MODE_DOWN, e => {
+    if (slide != 1) {
+        if (slide == 2) {
+            animate(buttonBack, 0.2, Ease.quads, sh*1.19, 'y');
+        } else if (slide == 4) {
+            animate(buttonNext, 0.2, Ease.quads, sh*0.89, 'y');
+        }
+        slide--;
+        setText(infoHeader, headerText[slide]);
+        setText(infoDesc, descText[slide]);
+    }
+    sfxClick.play();
+});
+
+buttonNext.on(MODE_DOWN, e => {
+    if (slide != 4) {
+        if (slide == 1) {
+            animate(buttonBack, 0.2, Ease.quads, sh*0.89, 'y');
+        } else if (slide == 3) {
+            animate(buttonNext, 0.2, Ease.quads, sh*1.19, 'y');
+        }
+        slide++;
+        setText(infoHeader, headerText[slide]);
+        setText(infoDesc, descText[slide]);
+    }
+    sfxClick.play();
+});
+
+// TIMER ------------------------------------------------------------------- //
+
+let timer = async () => {
+    await new Promise(done => setTimeout(() => done(), 5000));
+    timeDelta += 5;
+    if (timeDelta == 180) {
+        scene = 0;
+        reset1_0();
+        reset2_1();
+    }
+    timer();
+};
+
+timer();

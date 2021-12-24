@@ -1,0 +1,24 @@
+/* https://www.youtube.com/watch?v=aimM6TOzW3s */
+
+@font-face {
+    font-family: "Open Sans Condensed";
+    src: url('fonts/opensanscondensed.ttf');
+}
+
+@font-face {
+    font-family: "M PLUS 1";
+    src: url('fonts/mplus1_wght.ttf');
+}
+
+.a {
+    font-family: "Open Sans Condensed";
+    font-size: 0px;
+}
+
+h3 {
+    color: #dddddd;
+    font-family: "M PLUS 1";
+    font-weight: 100;
+    letter-spacing: 6px;
+    text-align: center;
+}
